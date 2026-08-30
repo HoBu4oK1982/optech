@@ -1,0 +1,106 @@
+/* breadcrumbs */
+.crumbs {
+  padding: 18px 0 6px;
+}
+.crumbs__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.crumbs__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* separator chevron */
+.crumbs__sep {
+  width: 15px;
+  height: 15px;
+  color: #b6c2d4;
+  flex: 0 0 15px;
+}
+
+/* links */
+.crumbs__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  color: #5b6b82;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.crumbs__link:hover {
+  color: #0847a2;
+  background: rgba(8, 71, 162, 0.07);
+}
+
+/* home icon */
+.crumbs__home {
+  width: 18px;
+  height: 18px;
+}
+.crumbs__link--home {
+  padding: 5px 9px;
+}
+.crumbs__srlabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* current (last) */
+.crumbs__current {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  color: #0a1226;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* Мобильные крошки — раньше переносились на несколько строк (длинное
+   название товара разъезжалось на 2-3 строки, а стрелка-разделитель
+   иногда повисала одна на своей строке). Вместо переноса — одна строка,
+   которую можно свайпнуть по горизонтали. */
+@media (max-width: 768px) {
+  .crumbs {
+    padding: 14px 0 6px;
+  }
+  .crumbs__list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 2px;
+    /* лёгкое затухание справа — подсказка, что список можно проскроллить */
+    -webkit-mask-image: linear-gradient(to right, #000 92%, transparent 100%);
+    mask-image: linear-gradient(to right, #000 92%, transparent 100%);
+  }
+  .crumbs__list::-webkit-scrollbar {
+    display: none;
+  }
+  .crumbs__item {
+    flex-shrink: 0;
+  }
+  .crumbs__link,
+  .crumbs__current {
+    white-space: nowrap;
+  }
+}

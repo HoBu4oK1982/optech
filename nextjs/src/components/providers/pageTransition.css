@@ -1,0 +1,94 @@
+/* ===== PageTransition — переходы между страницами (v2) ===== */
+
+.pt-wrap {
+  position: relative;
+}
+
+.pt-content {
+  /* ВАЖНО: will-change:transform ЗДЕСЬ (постоянным CSS-правилом) сам по себе
+     создаёт containing block для position:fixed потомков — точно так же,
+     как реальный transform, независимо от того, есть ли сейчас инлайновый
+     transform или нет. Из-за этого модалка ProductInquiry (fixed) внутри
+     .pt-content центрировалась не по экрану, а по всей странице. Поэтому
+     will-change для transform выставляем и убираем динамически в GSAP
+     (onStart/clearProps в PageTransition.tsx) только на время самой
+     анимации — тут остаётся только безопасный opacity. */
+  will-change: opacity;
+}
+
+/* тонкая светящаяся линия-скан, едет по всему экрану */
+.pt-sweep {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  z-index: 9500;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity;
+  background: linear-gradient(
+    90deg,
+    rgba(78, 176, 251, 0) 0%,
+    rgba(78, 176, 251, 0.9) 28%,
+    #ffffff 50%,
+    rgba(255, 159, 28, 0.9) 72%,
+    rgba(78, 176, 251, 0) 100%
+  );
+  box-shadow: 0 0 18px 2px rgba(78, 176, 251, 0.45);
+}
+
+/* верхний прогресс-бар загрузки данных */
+.pt-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 9600;
+  pointer-events: none;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform, opacity;
+  background: linear-gradient(90deg, #4eb0fb 0%, #74adf7 55%, #ff9f1c 100%);
+  box-shadow: 0 0 10px rgba(78, 176, 251, 0.6);
+}
+
+/* фирменный «signal ping» — короткий пульс из трёх полосок по центру
+   экрана при каждом переходе; тот же мотив, что «уровень сигнала» в
+   прелоадере, для узнаваемости на каждом шаге */
+.pt-ping {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 9550;
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 26px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.pt-pingBar {
+  display: block;
+  width: 6px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #74adf7 0%, #4eb0fb 60%, #ff9f1c 100%);
+  box-shadow: 0 0 12px rgba(78, 176, 251, 0.7);
+  transform-origin: bottom center;
+  will-change: transform, opacity;
+}
+
+.pt-pingBar:nth-child(1) { height: 12px; }
+.pt-pingBar:nth-child(2) { height: 22px; }
+.pt-pingBar:nth-child(3) { height: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pt-sweep,
+  .pt-ping {
+    display: none;
+  }
+}

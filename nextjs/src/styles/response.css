@@ -1,0 +1,736 @@
+@media only screen and (min-device-width : 300px) and (max-device-width : 768px) {
+    .mapGoogle iframe {
+        width: 100%;
+        height: 300px;
+        margin: 30px 0;
+    }
+
+    .footerCopyYear::before {
+        display: none;
+    }
+
+    .footerCopyYear::after {
+        display: none;
+    }
+
+    .tab_box .tab_btn {
+        font-size: 14px;
+    }
+
+    .logoSloganLong {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .headerHeadTop nav ul {
+        justify-content: center;
+    }
+
+    .headerHeadLink {
+        margin: 0 10px 0 0;
+    }
+
+    .headerHeadLink a {
+        font-size: 14px;
+    }
+
+    .line {
+        position: absolute;
+        top: 62px;
+        left: 0;
+        width: 114px;
+        height: 5px;
+        background-color: #003c7d;
+        border-radius: 10px;
+        transition: all .3s ease-in-out;
+    }
+
+    .headerLang {
+        margin-left: 0;
+    }
+
+    .slider {
+        height: 100%;
+        border-bottom: 0;
+    }
+
+    .homeBestCategories {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px !important;
+        margin-top: 20px;
+        min-height: 0;
+        position: relative;
+        z-index: 98;
+    }
+
+    .productContentHead {
+        justify-content: center;
+    }
+
+    .productsOutput {
+        justify-content: space-between;
+        margin-left: 0;
+    }
+
+    .productItem h2 {
+        font-size: 14px;
+    }
+
+    .productItem {
+        width: 48%;
+        margin: 0 0 10px 0;
+        max-width: 100%;
+    }
+
+    .productGallery {
+        margin-bottom: 20px;
+    }
+
+    .catalogItem {
+        margin-right: 0;
+    }
+
+    .catalogContent {
+        justify-content: space-between;
+    }
+
+    .catalogItem h3 {
+        font-size: 14px;
+    }
+
+    .catalogContent {
+        margin-right: 0;
+    }
+
+    .homeBestCatItem,
+    .catalogItem {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 10px;
+    }
+
+    /* тот же фикс, что в styles.css: резервируем место под 3 строки
+       заголовка на мобильном, чтобы карточки не разъезжались по высоте */
+    .homeBestCatItem h3 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        font-size: 15px;
+    }
+
+    .homeBestBtn {
+        font-size: 12px;
+        background-size: contain;
+        margin-top: 10px;
+    }
+
+    .homeBestCatItem img {
+        max-width: 100px;
+    }
+
+    .homeBestAboutNumbers {
+        display: block;
+    }
+
+    .homeBestNumbers {
+        padding-top: 30px;
+    }
+
+    .headerCatalogNav {
+        display: none;
+    }
+
+    .homeH2 {
+        font-size: 30px;
+    }
+
+    .homeBestNumberItem {
+        width: 180px;
+    }
+
+    .homeBestNumberNum {
+        font-size: 72px;
+    }
+
+    .special img {
+        width: 100%;
+        height: auto;
+    }
+
+    .special .specialText {
+        top: 15px;
+        font-size: 26px;
+    }
+
+    .special:first-child {
+        margin-bottom: 10px;
+    }
+
+    /* На мобильном грид 5 колонок (десктоп) сжимаем до 2 — так же, как
+       раньше items сами по себе шли по 2 в ряд через max-width:42%. */
+    .solutionContent {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .solutionItem {
+        max-width: 100%;
+        margin-bottom: 0;
+    }
+
+    .commonTitle {
+        font-size: 25px;
+    }
+
+    .solutionItem img {
+        width: 100%;
+        height: auto;
+    }
+
+    .container {
+        padding: 0 10px;
+    }
+
+    .subcategoryItem {
+        width: 42%;
+        font-size: 14px;
+        max-width: 100%;
+        padding: 10px;
+        margin: 0 0 10px 0;
+    }
+
+    .commonBreadcrumbs ul li a {
+        font-size: 10px;
+    }
+
+    .categoryOutput {
+        align-items: normal;
+        justify-content: space-between;
+    }
+
+    .subcategoryItem img {
+        width: 90%;
+        border-radius: 10px;
+    }
+
+    .commonBreadcrumbs ul:last-child li {
+        font-size: 10px;
+    }
+
+    .solutionItem p {
+        font-size: 14px;
+    }
+
+    .solutionsWrap {
+        padding: 35px 0;
+    }
+
+    .articlesWrap {
+        padding: 35px 0;
+    }
+
+    /* На мобильном грид 4 колонки (десктоп) сжимаем до 1 в ряд, как раньше. */
+    .articlesContent {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 10px;
+    }
+
+    .articlesItem {
+        width: 100%;
+        margin: 0;
+    }
+
+    #whatsAppFixed {
+        display: none;
+    }
+
+    .slick-slide {
+        text-align: center;
+    }
+
+    main {
+        background-image: none;
+    }
+
+    .partnersWrap {
+        padding: 35px 0;
+    }
+
+    .footerLogoWrap {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .footer {
+        justify-content: center;
+        padding: 20px 0 0 0;
+    }
+
+    .scrollTopBtn {
+        display: none;
+    }
+
+    body {
+        font-size: 14px;
+    }
+
+    .productContent {
+        padding: 10px;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    .descrProduct table {
+        display: block;
+        max-width: -moz-fit-content;
+        max-width: fit-content;
+        margin: 0 auto;
+        overflow-x: auto;
+        white-space: nowrap;
+        margin: 20px 0;
+        background-color: #fff;
+    }
+
+    th,
+    td {
+        min-width: 100px;
+    }
+
+    .brandsContent {
+        justify-content: space-between;
+    }
+
+    .brandItem {
+        width: 43%;
+        background-color: #fff;
+        padding: 10px;
+        margin: 0 0 10px 0;
+    }
+
+    .headerLogo p {
+        display: none;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 5px;
+    }
+
+    .footerCategoryWrap {
+        width: 344px;
+    }
+
+    .licenseContent a {
+        display: block;
+        max-width: 47%;
+        margin-bottom: 20px;
+    }
+
+    footer {
+        padding-bottom: 45px;
+    }
+
+    /*Mobile tel and whatsapp*/
+
+    #mobile_bar .mobile_bar_item {
+        display: inline-block;
+        vertical-align: middle;
+        width: 33.33%;
+        float: left;
+        text-align: center;
+        border-left: 1px solid #fff;
+        border-right: 1px solid #fff;
+        margin: 8px 0;
+    }
+
+    #mobile_bar .mobile_bar_wrapper a,
+    #mobile_bar_wrapper .copyrights a {
+        display: block;
+        font-size: 14px;
+        font-family: Roboto, sans-serif;
+        font-weight: 400;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .icon,
+    .mobile_bar_icons_inner {
+        display: block;
+    }
+
+    #mobile_bar .mobile_bar_wrapper a,
+    #mobile_bar_wrapper .copyrights a {
+        display: block;
+        font-family: Roboto, sans-serif;
+        font-weight: 400;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        display: flex;
+        justify-content: center;
+        font-size: 14px;
+        align-items: center;
+    }
+
+    #mobile_bar .mobile_bar_item:last-child {
+        border-right: none;
+    }
+
+    #mobile_bar .mobile_bar_item:first-child {
+        border-left: none;
+    }
+
+    #mobile_bar .mobile_bar_item {
+        display: inline-block;
+        vertical-align: middle;
+        width: 33.33%;
+        float: left;
+        text-align: center;
+        border-left: 1px solid #fff;
+        border-right: 1px solid #fff;
+        margin: 8px 0;
+    }
+
+    .mobile_bar_wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    #mobile_bar {
+        background-color: #000000;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 100000;
+        opacity: .8;
+        border-top: 3px solid #003d9f;
+    }
+
+    #mobile_bar {
+        display: block;
+    }
+
+    .mobile_bar_icons_inner svg {
+        height: 20px;
+        fill: #fff;
+        margin-right: 20px;
+    }
+
+    .headerSearch svg {
+        height: 28px;
+        margin-right: 5px;
+    }
+
+    /* .headerLogoMobile — унесено в единое правило ниже (было 2 конфликтующих
+       объявления left:110px / left:50%, которые на некоторых мобильных
+       браузерах пересчитывались по-разному после тапа/навигации). */
+
+    .headerMobile {
+        display: flex;
+        justify-content: space-between;
+        height: 50px;
+        background-color: #111224;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        border-bottom: 3px solid #449bdd;
+    }
+
+    header {
+        padding-top: 60px;
+    }
+
+    .headerCatalogBtnMobile {
+        margin: 15px 0 0 15px;
+    }
+
+    .headerMobileCatalog {
+        display: block;
+    }
+
+    .header__menu__mobile {
+        background-color: #fff;
+        position: absolute;
+        left: -1000px;
+        bottom: 0;
+        top: 50px;
+        transition: left 1s;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .header__menu__mobile.active {
+        left: 0;
+        right: 0;
+        transition: left 1s;
+    }
+
+    .headerHeadBtn {
+        display: none;
+    }
+
+    .headerHeadNav {
+        display: none;
+    }
+
+    .headerNavSearchWrap {
+        margin-top: 5px;
+        padding: 0;
+        border: 0;
+        background-color: transparent;
+    }
+
+    .headerHeadTop {
+        padding: 0 0 10px 0;
+        justify-content: center;
+    }
+
+    .headerHeadTopWrap {
+        margin-bottom: 0;
+        border: 0;
+    }
+
+    .headerSearchResult {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        height: 200px;
+        left: 0;
+        overflow: hidden;
+        overflow-y: auto;
+        padding-left: 20px;
+        position: absolute;
+        top: 40px;
+        width: 350px;
+        z-index: 200;
+    }
+
+    .headerMobileDataBtn {
+        color: #fff;
+        font-size: 10px;
+        padding: 10px 5px;
+        margin: 8px 10px 0 0;
+        border: 1px solid #003d9f;
+    }
+
+    .header__menu__mobile>ul {
+        padding: 30px 20px;
+        list-style: none;
+    }
+
+    .header__menu__mobile>ul>li>a {
+        text-decoration: none;
+        color: #000000;
+        font-size: 18px;
+        pointer-events: none;
+    }
+
+    .header__menu__mobile>ul>li>a:first-child {
+        display: flex;
+        align-items: center;
+        line-height: 1;
+        margin: 10px 0;
+    }
+
+    .header__menu__mobile>ul>li>a img {
+        margin-right: 10px;
+    }
+
+    .header__menu__mobile>ul>li>ul {
+        padding: 0 10px 0 50px;
+        list-style: none;
+    }
+
+    .header__menu__mobile>ul>li>ul a {
+        color: #000;
+        text-decoration: none;
+        padding: 5px 0;
+        display: block;
+    }
+
+    .dropdown__menu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 1s ease-out;
+    }
+
+    .dropdown__item:hover .dropdown__menu {
+        max-height: 1000px;
+        transition: max-height 1s ease-in;
+    }
+
+    .headerSearch button {
+        position: absolute;
+        z-index: 2;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        right: 0;
+        cursor: pointer;
+        top: 4px;
+        border-left: 1px solid #264b71;
+        padding: 3px 4px 0 7px;
+    }
+
+    .headerSearch input {
+        border-radius: 10px;
+        padding: 8px 50px 8px 20px;
+        border: 1px solid transparent;
+        width: 80%;
+        position: absolute;
+        z-index: 1;
+        right: 0;
+        top: 0;
+        outline: none;
+        transition: ease .5s;
+    }
+
+    .headerHeadMobileBtn {
+        /* Класс больше не рендерится — кнопка заявки теперь .mNav__cta
+           внутри MobileNavDrawer (mobileNavDrawer.css). */
+        display: none;
+    }
+}
+
+/* =====================================================================
+   Мобильная шапка — исправления (июль 2026)
+   1) Логотип OPTECH строго по центру (был прибит left:110px).
+   2) Внизу под слоганом убираем десктопный «КАТАЛОГ ТОВАРОВ» (MegaMenu .mm)
+      — на мобиле каталог открывается левым бургером. Оставляем только поиск.
+   Дублируем оба брейкпоинта: max-device-width (реальные телефоны, как и
+   весь файл) и max-width (узкое окно браузера/DevTools).
+   ===================================================================== */
+@media only screen and (max-device-width: 768px), only screen and (max-width: 768px) {
+    /* Логотип по центру верхней мобильной панели. Раньше центрирование было
+       через left:50% + transform:translateX(-50%) — эта связка с
+       position:fixed у мобильного Safari может пересчитываться некорректно
+       после тапа/навигации (известная особенность), из-за чего логотип
+       визуально "прыгал" вправо. left:0/right:0 + margin:auto центрирует
+       без translate — не зависит от пересчёта смещения на лету. */
+    .headerLogoMobile {
+        position: fixed !important;
+        top: 8px !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+        margin: 0 auto !important;
+        width: 150px;
+        height: auto;
+        z-index: 101;
+        transition: none !important;
+    }
+
+    /* Десктопный триггер каталога (КАТАЛОГ ТОВАРОВ) — прячем на мобиле,
+       каталог доступен через левый бургер. */
+    .headerNavSearchWrap .mm {
+        display: none !important;
+    }
+    .headerNavSearch {
+        justify-content: center;
+    }
+    .headerSmartSearch {
+        display: none !important;
+    }
+
+    /* Раньше здесь была куча отдельных проседающих строк: ссылки
+       Лицензии/О нас/Контакты, телефон, email, язык, слоган — каждая на
+       своей строке, вперемешку. Ссылки перенесены в панель «Меню», слоган
+       убран (дублирует логотип), а телефон/email/язык/лупа собраны в одну
+       компактную горизонтальную полосу: язык → контакты (2 строки,
+       line-height:1) → лупа. */
+    .headerHeadTopWrap {
+        display: none !important;
+    }
+    .logoSloganLong {
+        display: none !important;
+    }
+
+    .headerMobileBar {
+        display: flex !important;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 2px 0;
+    }
+    .headerMobileBar__lang {
+        flex: 0 0 auto;
+    }
+    .headerMobileBar__lang .selectLang {
+        background: rgba(255, 255, 255, 0.14);
+        border-radius: 8px;
+        padding: 6px 8px;
+        font-size: 13px;
+        font-family: 'GilroyMedium', Tahoma, Verdana, sans-serif;
+    }
+    .headerMobileBar__text {
+        flex: 1 1 auto;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+    .headerMobileBar__text a {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #fff;
+        font-family: 'GilroyMedium', Tahoma, Verdana, sans-serif;
+        font-size: 12px;
+        line-height: 1;
+        text-decoration: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .headerMobileBar__text a i {
+        flex: 0 0 auto;
+        font-size: 11px;
+        color: #4eb0fb;
+    }
+    .headerMobileBar__text a:active {
+        color: #4eb0fb;
+    }
+
+    .headerSearchMobileBtn {
+        display: inline-flex !important;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        margin: 0;
+        padding: 0;
+        border: none;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+        cursor: pointer;
+    }
+    .headerSearchMobileBtn:active {
+        background: rgba(255, 255, 255, 0.24);
+    }
+    .headerSearchMobileBtn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .headerMobileSlogan {
+        display: block !important;
+        width: 100%;
+        margin-top: 2px;
+        padding-bottom: 4px;
+        color: #f4941b;
+        font-family: 'GilroyMedium', Tahoma, Verdana, sans-serif;
+        font-size: 11px;
+        line-height: 1.3;
+        text-align: center;
+    }
+}

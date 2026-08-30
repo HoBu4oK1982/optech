@@ -1,0 +1,92 @@
+/* floating buttons */
+.waBtn,
+.scrollTopBtn {
+  position: fixed;
+  right: 24px;
+  z-index: 200;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 0;
+  transition: transform 0.25s ease, background-color 0.25s ease, opacity 0.3s ease;
+}
+
+/* whatsapp */
+.waBtn {
+  bottom: 92px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: #fff;
+  background: #25d366;
+  box-shadow: 0 10px 26px rgba(37, 211, 102, 0.45);
+}
+.waBtn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+  animation: waPulse 2.4s infinite;
+}
+.waBtn:hover {
+  transform: scale(1.08);
+  background: #1fbe5b;
+}
+@keyframes waPulse {
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+  70% { box-shadow: 0 0 0 16px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+/* scroll to top — !important чтобы перебить старое правило из layout.css */
+.scrollTopBtn {
+  position: fixed !important;
+  bottom: 92px !important;
+  left: 24px !important;
+  right: auto !important;
+  width: 56px !important;
+  height: 56px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  color: #fff !important;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.3) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  pointer-events: none;
+  z-index: 200;
+}
+.scrollTopBtn.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.scrollTopBtn:hover {
+  transform: scale(1.08);
+}
+/* белая стрелка, перебиваем старое styles.css (.scrollTopBtn svg { width:10px }) */
+.scrollTopBtn svg {
+  width: 25px !important;
+  height: 25px !important;
+  fill: none !important;
+  stroke: #fff !important;
+}
+
+@media (max-width: 640px) {
+  /* Раньше bottom:80px совпадал по высоте с копирайтом в футере (когда
+     футер "выезжает" снизу, см. .footer--fixed-under) — кнопки садились
+     поверх текста "ВСЕ ПРАВА ЗАЩИЩЕНЫ...". Подняли выше нижней чёрной
+     панели WhatsApp/Позвонить (#mobile_bar) и текста копирайта. */
+  .waBtn { right: 16px; bottom: 132px; width: 50px; height: 50px; }
+  .scrollTopBtn { left: 16px !important; right: auto !important; bottom: 132px !important; width: 50px !important; height: 50px !important; }
+  .scrollTopBtn svg { width: 28px !important; height: 28px !important; }
+}

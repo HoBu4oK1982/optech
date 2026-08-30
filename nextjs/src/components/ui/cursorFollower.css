@@ -1,0 +1,45 @@
+/* ===== CursorFollower — синий кружок, бегущий за курсором ===== */
+
+.cursorFollower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(78, 176, 251, 0.55) 0%,
+    rgba(78, 176, 251, 0.18) 60%,
+    rgba(78, 176, 251, 0) 100%
+  );
+  box-shadow: 0 0 14px 2px rgba(78, 176, 251, 0.35);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  will-change: transform;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cursorFollower.is-active {
+  background: radial-gradient(
+    circle,
+    rgba(255, 159, 28, 0.55) 0%,
+    rgba(255, 159, 28, 0.18) 60%,
+    rgba(255, 159, 28, 0) 100%
+  );
+  box-shadow: 0 0 14px 2px rgba(255, 159, 28, 0.35);
+}
+
+/* на тач-устройствах настоящего курсора нет — эффект скрываем полностью */
+@media (pointer: coarse) {
+  .cursorFollower {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursorFollower {
+    display: none;
+  }
+}

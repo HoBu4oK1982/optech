@@ -1,0 +1,606 @@
+/* mega menu — premium desktop catalogue panel */
+.mm {
+  position: relative;
+  display: inline-block;
+}
+
+/* portal wrapper (overlay + panel на уровне body) */
+.mmPortal {
+  position: relative;
+  z-index: 100000;
+}
+
+/* overlay */
+.mm__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(64, 156, 230, 0.18), transparent 42%),
+    rgba(5, 16, 38, 0.68);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.32s ease, visibility 0.32s ease;
+}
+.mmPortal.is-open .mm__overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* яркая копия кнопки поверх оверлея */
+.mm__trigger--float {
+  z-index: 100002;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* trigger */
+.mm__trigger {
+  position: relative;
+  z-index: 950;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: #fff;
+}
+.mm__trigger-label {
+  text-transform: uppercase;
+  font-family: 'AkrobatBold', 'Arial Narrow', sans-serif;
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  transition: color 0.2s ease;
+}
+.mm__trigger:hover .mm__trigger-label {
+  color: #f4941b;
+}
+/* при открытом меню оригинальную кнопку прячем — над оверлеем
+   показывается плавающая копия (.mm__trigger--float), поэтому
+   "КАТАЛОГ ТОВАРОВ" больше не двоится. visibility (не display) —
+   чтобы сохранить габариты для замера позиции копии. */
+.mm.is-open .mm__trigger {
+  visibility: hidden;
+}
+/* при открытом меню — оранжевые текст и крестик (для плавающей копии) */
+.mm.is-open .mm__trigger-label {
+  color: #f4941b;
+}
+.mm.is-open .mm__burger i {
+  background: #f4941b;
+}
+
+/* burger -> X (self-contained) */
+.mm__burger {
+  position: relative;
+  width: 24px;
+  height: 18px;
+  flex: 0 0 24px;
+}
+.mm__burger i {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.25s ease, top 0.3s ease;
+}
+.mm__burger i:nth-child(1) { top: 0; }
+.mm__burger i:nth-child(2) { top: 8px; }
+.mm__burger i:nth-child(3) { top: 16px; }
+.mm__burger.is-open i:nth-child(1) { top: 8px; transform: rotate(45deg); }
+.mm__burger.is-open i:nth-child(2) { opacity: 0; }
+.mm__burger.is-open i:nth-child(3) { top: 8px; transform: rotate(-45deg); }
+
+/* panel */
+.mm__panel {
+  display: none; /* gsap ставит grid */
+  position: fixed;
+  z-index: 100001;
+  grid-template-columns: 350px 1fr;
+  width: min(1320px, calc(100vw - 32px));
+  max-height: calc(100vh - 24px);
+  min-height: 0;
+  background: #ffffff;
+  border: 1px solid rgba(204, 219, 240, 0.9);
+  border-radius: 18px;
+  box-shadow: 0 34px 86px rgba(4, 15, 36, 0.32);
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+.mm__panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(115deg, rgba(10, 71, 162, 0.04), transparent 32%),
+    radial-gradient(circle at 86% 4%, rgba(30, 144, 255, 0.12), transparent 34%);
+}
+
+/* parents column */
+.mm__parents {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding: 16px 14px;
+  border-right: 1px solid #e8eef8;
+  height: 100%;
+  max-height: none;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+.mm__parents::-webkit-scrollbar,
+.mm__right::-webkit-scrollbar {
+  width: 7px;
+}
+.mm__parents::-webkit-scrollbar-thumb,
+.mm__right::-webkit-scrollbar-thumb {
+  background: #d5e2f5;
+  border-radius: 999px;
+}
+.mm__parent {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 58px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 15px;
+  color: #1e293b;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.mm__parent:hover,
+.mm__parent.is-active {
+  background: #ffffff;
+  border-color: #dce9fb;
+  box-shadow: 0 12px 28px rgba(8, 71, 162, 0.09);
+  transform: translateX(2px);
+}
+.mm__parent.is-active {
+  box-shadow: inset 3px 0 0 #f4941b, 0 12px 28px rgba(8, 71, 162, 0.1);
+}
+.mm__parent-ico {
+  width: 38px;
+  height: 38px;
+  padding: 5px;
+  object-fit: contain;
+  flex: 0 0 38px;
+  border-radius: 12px;
+  background: #f2f7fe;
+  border: 1px solid #e2edf9;
+}
+.mm__parent-ico--empty {
+  background:
+    linear-gradient(135deg, #eaf4ff, #f7fbff);
+}
+.mm__parent-name {
+  flex: 1;
+  font-size: 0.94rem;
+  font-weight: 700;
+  line-height: 1.22;
+  color: #1e293b;
+}
+.mm__parent-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 23px;
+  height: 23px;
+  color: #94a8c4;
+  font-size: 1.18rem;
+  opacity: 0.4;
+  transform: translateX(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.mm__parent:hover .mm__parent-arrow,
+.mm__parent.is-active .mm__parent-arrow {
+  opacity: 1;
+  transform: translateX(0);
+  color: #0847a2;
+  background: #edf5ff;
+  border-radius: 50%;
+}
+
+/* right column */
+.mm__right {
+  position: relative;
+  z-index: 1;
+  padding: 22px 28px 28px;
+  min-height: 0;
+  height: 100%;
+  max-height: none;
+  overflow-y: auto;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(247, 251, 255, 0.72)),
+    radial-gradient(circle at 100% 0%, rgba(35, 151, 244, 0.16), transparent 36%);
+}
+
+.mm__compact-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 14px;
+  padding: 0 0 14px;
+  border-bottom: 1px solid #e4eef9;
+}
+.mm__compact-copy {
+  min-width: 0;
+}
+.mm__right-title {
+  display: inline-block;
+  color: #10213b;
+  font-size: 1.35rem;
+  font-weight: 900;
+  line-height: 1.12;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease;
+}
+.mm__right-title:hover {
+  color: #f4941b;
+}
+.mm__section-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 15px;
+  border-radius: 12px;
+  background: #0847a2;
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 900;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: 0 12px 26px rgba(8, 71, 162, 0.16);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.mm__section-link:hover {
+  transform: translateY(-2px);
+  background: #0e67cf;
+  box-shadow: 0 16px 32px rgba(8, 71, 162, 0.22);
+}
+
+.mm__section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 0 12px;
+  color: #0f172a;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.mm__section-head b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: #edf5ff;
+  color: #0847a2;
+  font-size: 0.78rem;
+}
+
+.mm__children-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+}
+.mm__child-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) 22px;
+  gap: 13px;
+  align-items: center;
+  min-height: 88px;
+  padding: 12px 12px 12px 10px;
+  border: 1px solid #dfeaf8;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1e293b;
+  text-decoration: none;
+  box-shadow: 0 10px 26px rgba(8, 71, 162, 0.05);
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.mm__child-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(8, 71, 162, 0.07), transparent 48%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.mm__child-card:hover {
+  transform: translateY(-3px);
+  border-color: #b7d8ff;
+  background: #ffffff;
+  box-shadow: 0 18px 38px rgba(8, 71, 162, 0.12);
+}
+.mm__child-card:hover::before {
+  opacity: 1;
+}
+.mm__child-thumb {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 62px;
+  border-radius: 15px;
+  background: linear-gradient(180deg, #f7fbff, #eef6ff);
+  border: 1px solid #e1ecf8;
+  overflow: hidden;
+}
+.mm__child-thumb img {
+  max-width: 92%;
+  max-height: 88%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 10px rgba(15, 23, 42, 0.09));
+  transition: transform 0.25s ease;
+}
+.mm__child-card:hover .mm__child-thumb img {
+  transform: scale(1.06);
+}
+.mm__child-thumb.is-empty span,
+.mm__child-thumb > span {
+  color: rgba(8, 71, 162, 0.42);
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.mm__child-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.mm__child-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: #26364d;
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1.22;
+}
+.mm__child-meta {
+  color: #8ba0bd;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+.mm__child-go {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #eef6ff;
+  color: #0847a2;
+  font-size: 0.9rem;
+  transform: translateX(-2px);
+  opacity: 0.75;
+  transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.mm__child-card:hover .mm__child-go {
+  transform: translateX(2px);
+  opacity: 1;
+  background: #0847a2;
+  color: #ffffff;
+}
+.mm__child-card--all {
+  grid-column: span 2;
+}
+
+/* mobile */
+@media (max-width: 1060px) {
+  .mm__panel {
+    grid-template-columns: 320px 1fr;
+  }
+  .mm__children-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .mm__panel {
+    grid-template-columns: 1fr;
+    width: min(560px, calc(100vw - 24px));
+    max-height: 82vh;
+  }
+  .mm__parents {
+    height: auto;
+    max-height: 38vh;
+    border-right: 0;
+    border-bottom: 1px solid #eef2f8;
+  }
+  .mm__right {
+    height: auto;
+    max-height: 44vh;
+    padding: 18px;
+  }
+  .mm__compact-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .mm__section-link {
+    width: 100%;
+  }
+  .mm__right-title {
+    font-size: 1.28rem;
+  }
+  .mm__children-grid {
+    grid-template-columns: 1fr;
+  }
+  .mm__child-card,
+  .mm__child-card--all {
+    grid-column: auto;
+  }
+}
+
+/* =====================================================================
+   Мобильное мегаменю (аккордеон) — открывается левым бургером в шапке.
+   Родитель = кнопка-раскрывашка (без перехода), дети = ссылки.
+   Открытие/закрытие анимирует GSAP (см. MegaMenu.tsx, mobileTlRef) —
+   здесь только статичные базовые стили, без CSS transition/is-open,
+   чтобы анимации не конфликтовали друг с другом.
+   ===================================================================== */
+.mmMobile {
+  position: fixed;
+  inset: 0;
+  z-index: 100050;
+  visibility: hidden;
+  pointer-events: none;
+}
+.mmMobile__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 20, 44, 0.55);
+  opacity: 0;
+  visibility: hidden;
+}
+.mmMobile__drawer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: min(88vw, 380px);
+  background: #fff;
+  box-shadow: 0 0 60px rgba(6, 20, 44, 0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.mmMobile__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  background: linear-gradient(90deg, #121123, #003c7d);
+  color: #fff;
+}
+.mmMobile__title {
+  font-family: 'AkrobatBold', Tahoma, Verdana, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.mmMobile__close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.9rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.mmMobile__list {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0 30px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.mmMobile__item {
+  border-bottom: 1px solid #eef2f8;
+}
+.mmMobile__parent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'GilroyMedium', Tahoma, Verdana, sans-serif;
+  font-size: 15px;
+  color: #12213a;
+}
+.mmMobile__ico {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+.mmMobile__ico--empty {
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #eef3fb;
+}
+.mmMobile__name {
+  flex: 1;
+  line-height: 1.25;
+}
+.mmMobile__caret {
+  flex: 0 0 auto;
+  font-size: 1.4rem;
+  color: #0847a2;
+  transform: rotate(90deg);
+  transition: transform 0.24s ease;
+}
+.mmMobile__item.is-expanded .mmMobile__caret {
+  transform: rotate(-90deg);
+}
+.mmMobile__children {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 0 10px;
+  background: #f7faff;
+}
+.mmMobile__child {
+  padding: 10px 18px 10px 62px;
+  color: #35507a;
+  text-decoration: none;
+  font-size: 14px;
+  font-family: 'GilroyRegular', Tahoma, Verdana, sans-serif;
+}
+.mmMobile__child:active {
+  background: #eaf1fb;
+}
+.mmMobile__child--all {
+  font-family: 'GilroyBold', Tahoma, Verdana, sans-serif;
+  color: #0847a2;
+}
+
+/* Мобильное меню только на узких экранах; на десктопе используется .mmPortal */
+@media (min-width: 769px) {
+  .mmMobile {
+    display: none;
+  }
+}

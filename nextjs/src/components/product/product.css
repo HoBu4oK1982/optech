@@ -1,0 +1,298 @@
+/* ============================================================
+   Product detail page — layout matching optech design system.
+   ============================================================ */
+.productPage {
+  position: relative;
+  padding: 26px 0 80px;
+}
+.productPage .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* header: big Akrobat title + breadcrumbs (as on live site) */
+.productHead__title {
+  margin: 0 0 4px;
+  font-family: 'AkrobatBold', Tahoma, Verdana, sans-serif;
+  font-size: clamp(1.7rem, 2.7vw, 2.4rem);
+  font-weight: 800;
+  color: #0a1226;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e6ecf5;
+}
+
+/* ---------- two-column top block (white card) ---------- */
+.productTop {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: 40px;
+  align-items: start;
+  margin: 30px 0 46px;
+  padding: 34px;
+  background: #fff;
+  border: 1px solid #e6ecf5;
+  border-radius: 20px;
+  box-shadow: 0 14px 40px rgba(10, 18, 38, 0.06);
+}
+
+.productGallery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  min-height: 320px;
+  background: #fff;
+  border: 1px solid #eef2f8;
+  border-radius: 16px;
+  /* картинка «едет» вместе со скроллом, пока читаешь длинные характеристики
+     справа, и отпускается сама, как только правая колонка заканчивается —
+     стандартное поведение position: sticky внутри .productTop (align-items:
+     start уже задан на родителе, это нужно, чтобы sticky не растягивался). */
+  position: sticky;
+  top: 96px;
+  align-self: start;
+}
+.productGallery img {
+  max-width: 100%;
+  max-height: 460px;
+  object-fit: contain;
+}
+.productGallery__empty {
+  width: 120px;
+  height: 120px;
+  border-radius: 16px;
+  background: #eef3fb;
+}
+
+/* info column */
+.productInfo {
+  padding-top: 8px;
+  min-width: 0;
+}
+.productInfo__summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 28px;
+  margin: 0 0 30px;
+}
+.productInfo__action {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+.productMeta {
+  min-width: 0;
+  margin: 0;
+  font-size: 1.12rem;
+  line-height: 2;
+  color: #1e293b;
+}
+.productMeta__row {
+  display: block;
+}
+.productMeta__label {
+  color: #334155;
+}
+.productMeta__value {
+  font-weight: 700;
+}
+.productMeta__brand {
+  color: #e8842b;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+.productMeta__brand:hover {
+  text-decoration: underline;
+}
+.productPrice {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 4px 0 0;
+}
+.productPrice__current {
+  font-family: 'AkrobatBold', Tahoma, Verdana, sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #0847a2;
+}
+.productPrice__old {
+  font-size: 1.1rem;
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+.productPrice__onRequest {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.productInfo__divider {
+  height: 1px;
+  margin: 28px 0 22px;
+  background: #e6ecf5;
+}
+
+/* request-price button */
+.btnRequest {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 32px;
+  background: linear-gradient(135deg, #1f6fe5, #0a49b0);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: 'AkrobatBold', Tahoma, Verdana, sans-serif;
+  font-weight: 700;
+  font-size: 1.02rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  cursor: pointer;
+  box-shadow: 0 12px 26px rgba(31, 111, 229, 0.28);
+  transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btnRequest:hover {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(31, 111, 229, 0.34);
+}
+.btnRequest svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+/* ---------- tabs with sliding underline ---------- */
+.productTabs {
+  margin: 0;
+  min-width: 0;
+}
+.productTabs__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 42px;
+  border-bottom: 1px solid #e6ecf5;
+}
+.productTabs__btn {
+  position: relative;
+  padding: 0 2px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'AkrobatBold', Tahoma, Verdana, sans-serif;
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #94a3b8;
+  transition: color 0.22s ease;
+}
+.productTabs__btn:hover {
+  color: #5b7089;
+}
+.productTabs__btn--active {
+  color: #0847a2;
+}
+.productTabs__btnShort {
+  display: none;
+}
+.productTabs__ink {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #0847a2, #4eb0fb);
+}
+.productTabs__panel {
+  padding-top: 28px;
+  color: #334155;
+  min-width: 0;
+}
+/* широкие таблицы из описания не должны вылезать за карточку —
+   даём таблице горизонтальный скролл внутри своего блока */
+.productTabs__panel table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.productTabs__panel img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- related / recommended ---------- */
+.productRelated {
+  margin-top: 8px;
+}
+.productRelated__title {
+  margin: 0 0 26px;
+  font-family: 'AkrobatBold', Tahoma, Verdana, sans-serif;
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+  font-weight: 800;
+  color: #0a1226;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .productTop {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding: 20px;
+  }
+  .productGallery {
+    min-height: 300px;
+    padding: 24px;
+    /* на мобильном колонки складываются в одну — sticky-эффект тут не нужен
+       и будет мешать, картинка просто идёт в обычном потоке над инфо */
+    position: static;
+    top: auto;
+  }
+  .productInfo__summary {
+    gap: 18px;
+  }
+  .btnRequest {
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (max-width: 760px) {
+  .productInfo__summary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .productInfo__action {
+    justify-content: stretch;
+    padding-top: 0;
+  }
+}
+@media (max-width: 700px) {
+  .productTabs__nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .productTabs__btn {
+    padding: 0 0 14px;
+    font-size: 0.92rem;
+    text-align: center;
+  }
+  /* Полные названия ("Описание продукта", "Характеристики продукта",
+     "Информация для заказа") не помещались в один ряд на мобиле —
+     показываем короткие варианты ("Описание", "Характеристики",
+     "Информация"), чтобы все три вкладки стояли в один ряд. */
+  .productTabs__btnFull {
+    display: none;
+  }
+  .productTabs__btnShort {
+    display: inline;
+  }
+}

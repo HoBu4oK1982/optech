@@ -1,0 +1,24 @@
+# Laravel
+laravelopt/vendor/
+laravelopt/node_modules/
+laravelopt/.env
+laravelopt/storage/framework/cache/data/*
+laravelopt/storage/framework/sessions/*
+laravelopt/storage/framework/views/*
+laravelopt/storage/logs/*
+laravelopt/bootstrap/cache/*
+laravelopt/public/hot
+laravelopt/public/storage
+
+# Next.js
+nextjs/node_modules/
+nextjs/.next/
+nextjs/.env.local
+nextjs/out/
+
+# Общее
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

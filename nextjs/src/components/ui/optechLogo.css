@@ -1,0 +1,22 @@
+/* ===== OptechLogo — цвета и поведение как у старого headerLogo.png ===== */
+
+.op-logo-svg .cls-1 {
+  fill: #fff;
+}
+
+.op-logo-svg .cls-2 {
+  fill: #74adf7;
+}
+
+/* Раньше transition/hover висели на селекторах ".headerLogo a img" /
+   ".footerLogo a img" — теперь тег другой (svg), дублируем поведение. */
+.headerLogo a svg.op-logo-svg,
+.footerLogo a svg.op-logo-svg {
+  display: block;
+  transition: ease 0.5s;
+}
+
+.headerLogo a:hover svg.op-logo-svg,
+.footerLogo a:hover svg.op-logo-svg {
+  transform: scale(0.9);
+}

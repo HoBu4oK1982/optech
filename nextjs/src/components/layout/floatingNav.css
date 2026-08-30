@@ -1,0 +1,151 @@
+/* floating nav — появляется при скролле вверх */
+.floatNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 800;
+  background: linear-gradient(90deg, #121123 0%, #003c7d 100%);
+  border-bottom: 2px solid #449bdd;
+  box-shadow: 0 8px 30px rgba(2, 8, 23, 0.35);
+  transform: translateY(-110%);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.floatNav.is-visible {
+  transform: translateY(0);
+}
+
+.floatNav__inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+/* logo */
+.floatNav__logo {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+}
+.floatNav__logo svg {
+  height: 30px;
+  width: auto;
+}
+
+/* catalog wrapper (MegaMenu внутри) */
+.floatNav__catalog {
+  flex: 0 0 auto;
+}
+/* компактнее кнопку каталога в плавающей панели */
+.floatNav__catalog .mm__trigger-label {
+  font-size: 16px;
+}
+
+/* nav links — как в основной навигации */
+.floatNav__links {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.floatNav__links a {
+  color: #ffffff;
+  font-family: 'AkrobatRegular', Tahoma, Verdana, sans-serif;
+  font-size: 18px;
+  text-decoration: none;
+  padding: 8px 22px;
+  border-right: 1px solid #22466b;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+.floatNav__links a:first-child {
+  border-left: 1px solid #22466b;
+}
+.floatNav__links .floatNav__home {
+  width: 54px;
+  min-width: 54px;
+  height: 68px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.floatNav__home svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  transition: transform 0.22s ease;
+}
+.floatNav__home:hover svg {
+  transform: translateY(-1px);
+}
+
+.floatNav__links a:hover {
+  color: #ffa234;
+}
+
+/* cta */
+.floatNav__cta {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 26px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1f6fe0 0%, #0847a2 100%);
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 8px 22px rgba(8, 71, 162, 0.4);
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+.floatNav__cta:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+.floatNav__cta-ico {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+}
+.floatNav__cta-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.1;
+  font-family: 'AkrobatBold', Tahoma, Verdana, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* адаптив */
+@media (max-width: 1100px) {
+  .floatNav__links { gap: 14px; }
+  .floatNav__links a { font-size: 0.86rem; }
+}
+@media (max-width: 900px) {
+  .floatNav__links { display: none; }
+}
+@media (max-width: 620px) {
+  .floatNav__logo { display: none; }
+  .floatNav__inner { gap: 14px; height: 60px; }
+}
+
+/* На мобиле уже есть постоянно закреплённая шапка (.headerMobile, см.
+   response.css) с тем же каталогом и кнопкой заявки — этот плавающий бар
+   был задуман только для десктопа (где шапка не зафиксирована и уезжает
+   при скролле). На мобиле он просто наслаивался поверх контента отдельной
+   обрубленной плашкой ("КАТАЛОГ ТОВАРОВ" + "ОСТАВИТЬ ЗАЯВКУ"). Убираем
+   целиком. */
+@media (max-width: 768px) {
+  .floatNav {
+    display: none !important;
+  }
+}

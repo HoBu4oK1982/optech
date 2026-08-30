@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #4eb0fb;
+  --dark: #121123;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #333;
+  background: #fff;
+}
+
+/* Rich text content from admin (descriptions via Summernote) */
+/* Товарные описания часто копипастятся из карточек производителей —
+   вместе с текстом тянется и inline font-family источника (style=
+   "font-family: Arial" и т.п. от Word/сайтов поставщиков), из-за чего
+   шрифт «плывёт» и не совпадает с остальным сайтом. !important в
+   авторской таблице стилей перебивает НЕ-important inline-стиль (так
+   работает каскад CSS) — форсируем фирменный шрифт на всём rich-контенте
+   и НА ЛЮБОМ его потомке, что бы туда ни было вставлено при копипасте. */
+.rich-content,
+.rich-content * {
+  font-family: 'GilroyMedium', Tahoma, Verdana, sans-serif !important;
+}
+.rich-content h1,
+.rich-content h2,
+.rich-content h3,
+.rich-content h4 {
+  font-family: 'AkrobatBold', Tahoma, Verdana, sans-serif !important;
+}
+
+.rich-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.rich-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.rich-content table td,
+.rich-content table th {
+  border: 1px solid #e5e7eb;
+  padding: 8px 12px;
+}
+
+.rich-content h1, .rich-content h2, .rich-content h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.rich-content p {
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+}
+
+.rich-content ul, .rich-content ol {
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Swiper overrides */
+.swiper-pagination-bullet-active {
+  background: var(--primary) !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--primary) !important;
+}

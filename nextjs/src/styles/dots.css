@@ -1,0 +1,95 @@
+/* dots background (внутренние страницы, кроме главной) */
+body.has-dots {
+  background-color: #f5f7fb;
+}
+body.has-dots::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(70, 100, 150, 0.09) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* ============================================================
+   Футер зафиксирован под контентом (как на freon.kz) — контент
+   «выезжает» и открывает его при скролле до конца страницы.
+
+   ИСПРАВЛЕНО: раньше Header и .appMain были обёрнуты в общий .appShell
+   (flex-column). У .appShell не было pointer-events:none, а его короб
+   (из-за flex-layout) физически растягивался на всю высоту, включая
+   зону спейсера/футера — клики там попадали в этот пустой div-контейнер
+   и не доходили до зафиксированного футера ниже. Убрал .appShell
+   полностью: Header и .appMain теперь плоские соседи (как на freon.kz,
+   где нет промежуточной обёртки) — так некому "перехватывать" клики.
+
+   Механика (десктоп, ≥961px), z-index — как на freon.kz один в один:
+   - .footer--fixed-under (styles.css) — z-index:14, сам футер, всегда
+     внизу экрана, независимо от скролла.
+   - .appMain — z-index:18, прозрачная обёртка НАД футером, сама
+     pointer-events:none, чтобы клики в пустых зонах доходили до футера.
+   - .appMain__sheet — непрозрачный «лист» с реальным контентом,
+     pointer-events:auto возвращает клики самому контенту.
+   - .appFooterSpacer — невидимый спейсер точно по высоте футера
+     (--site-footer-h меряет и прокидывает Footer.tsx через
+     ResizeObserver) — скролл через эту прозрачную область и создаёт
+     эффект «выезжающего» футера.
+   - .appBottomDock — z-index:19, тонкая размытая полоска у самого низа
+     экрана для мягкого перехода контента в футер.
+   ============================================================ */
+.appMain {
+  position: relative;
+}
+
+@media (min-width: 961px) {
+  .appMain {
+    z-index: 18;
+    background: transparent;
+    pointer-events: none;
+  }
+  .appMain__sheet {
+    position: relative;
+    background: #f5f7fb;
+    min-height: calc(100vh - 120px);
+    pointer-events: auto;
+  }
+  .appFooterSpacer {
+    width: 100%;
+    height: var(--site-footer-h, 420px);
+    pointer-events: none;
+    background: transparent;
+  }
+  .appBottomDock {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 60px;
+    z-index: 19;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .appBottomDock__panel {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.05);
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.55) 40%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.55) 40%, rgba(0, 0, 0, 0) 100%);
+  }
+}
+
+/* Мобилка (≤960px): обычный футер в потоке, без fixed/спейсера/дока —
+   эффект «выезжающего» футера имеет смысл только на широких экранах. */
+@media (max-width: 960px) {
+  .appFooterSpacer,
+  .appBottomDock {
+    display: none !important;
+  }
+  .appMain__sheet {
+    min-height: 0;
+  }
+}

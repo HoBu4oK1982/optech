@@ -1,0 +1,224 @@
+/* ===== SitePreloader — «захват сигнала» OPTECH (v2) ===== */
+
+.opl-root {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  overflow: hidden;
+  background: #05152b;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.opl-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.opl-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 42%, rgba(5, 21, 43, 0) 40%, rgba(3, 12, 26, 0.72) 100%);
+}
+
+.opl-center {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 0 24px;
+  text-align: center;
+  will-change: transform, opacity;
+}
+
+/* ——— логотип ——— */
+.opl-logoWrap {
+  position: relative;
+  width: min(340px, 74vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* кольца-пульсы, расходящиеся от центра логотипа при входе */
+.opl-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 90px;
+  height: 90px;
+  margin: -45px 0 0 -45px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(120, 190, 255, 0.7);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* вспышка по центру — пунктуация на входе и выходе */
+.opl-flash {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 260px;
+  height: 260px;
+  margin: -130px 0 0 -130px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(120, 190, 255, 0.5) 32%,
+    rgba(120, 190, 255, 0) 68%
+  );
+}
+
+.opl-logo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  clip-path: inset(0 100% 0 0);
+  will-change: clip-path, transform;
+  filter: drop-shadow(0 6px 26px rgba(78, 176, 251, 0.32));
+}
+
+.opl-logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.opl-logo .cls-1 {
+  fill: #fff;
+}
+
+.opl-logo .cls-2 {
+  fill: #74adf7;
+}
+
+.opl-logo .op-bar {
+  transform-box: fill-box;
+  transform-origin: left center;
+}
+
+/* сканирующая линия, «читающая» логотип */
+.opl-scan {
+  position: absolute;
+  top: -8%;
+  left: -6%;
+  width: 3px;
+  height: 116%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(120, 190, 255, 0) 0%,
+    rgba(120, 190, 255, 0.95) 45%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(120, 190, 255, 0.95) 55%,
+    rgba(120, 190, 255, 0) 100%
+  );
+  box-shadow: 0 0 18px 4px rgba(120, 190, 255, 0.65);
+  opacity: 0;
+}
+
+/* ——— «уровень сигнала» вместо обычного progress-bar ——— */
+.opl-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.opl-sigMeter {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 22px;
+}
+
+.opl-sigBar {
+  display: block;
+  width: 5px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.14);
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  transform: scaleY(1);
+  transform-origin: bottom center;
+}
+
+.opl-sigBar:nth-child(1) { height: 8px; }
+.opl-sigBar:nth-child(2) { height: 12px; }
+.opl-sigBar:nth-child(3) { height: 16px; }
+.opl-sigBar:nth-child(4) { height: 19px; }
+.opl-sigBar:nth-child(5) { height: 22px; }
+
+.opl-sigBar.is-lit {
+  background: linear-gradient(180deg, #74adf7 0%, #4eb0fb 70%, #ff9f1c 100%);
+  box-shadow: 0 0 10px rgba(78, 176, 251, 0.65);
+}
+
+.opl-pct {
+  min-width: 40px;
+  text-align: left;
+  font-family: 'AkrobatBold', Tahoma, Verdana, sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.02em;
+  color: #cfe4ff;
+  font-variant-numeric: tabular-nums;
+}
+
+.opl-tag {
+  font-family: 'AkrobatRegular', Tahoma, Verdana, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: rgba(207, 228, 255, 0.62);
+  padding-left: 0.42em;
+}
+
+/* светящаяся кромка при уходе шторки вверх */
+.opl-edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(78, 176, 251, 0), #74adf7 30%, #ff9f1c 70%, rgba(78, 176, 251, 0));
+  box-shadow: 0 0 16px 2px rgba(78, 176, 251, 0.55);
+  pointer-events: none;
+}
+
+@media (max-width: 560px) {
+  .opl-center {
+    gap: 18px;
+  }
+  .opl-pct {
+    font-size: 15px;
+  }
+  .opl-tag {
+    font-size: 11px;
+    letter-spacing: 0.34em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opl-scan,
+  .opl-ring,
+  .opl-flash {
+    display: none;
+  }
+}
