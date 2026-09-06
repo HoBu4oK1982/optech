@@ -112,6 +112,8 @@ export default async function ArticleDetailPage({ params }: { params: { locale: 
       title: article.title,
       href: `/${locale}/article/${article.slug}`,
       imageUrl: articleImageUrl(article.image),
+      imageAlt: article.image_alt,
+      imageTitle: article.image_title,
       excerpt: article.description ? truncateHtml(article.description, 105) : null,
       date: formatCardDate(article.published_at || article.created_at),
     }));

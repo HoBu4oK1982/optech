@@ -28,7 +28,7 @@ export default function PartnersSlider({ partners }: { partners: any[] }) {
         <img
           key={idx}
           src={`${BACKEND_URL}/assets/images/partners/${item.image}`}
-          alt="Наши партнеры"
+          alt={item.alt || 'Наши партнёры'}
           className="articlesItemImg"
           loading="lazy"
           decoding="async"

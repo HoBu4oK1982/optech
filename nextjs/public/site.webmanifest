@@ -1,0 +1,17 @@
+{
+  "name": "OPTECH — Оптические Технологии",
+  "short_name": "OPTECH",
+  "description": "Дистрибьютор телекоммуникационного и измерительного оборудования в Казахстане",
+  "start_url": "/ru",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#121123",
+  "theme_color": "#121123",
+  "lang": "ru",
+  "icons": [
+    { "src": "/assets/images/favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "/assets/images/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "/assets/images/icon-512.png", "type": "image/png", "sizes": "512x512" },
+    { "src": "/assets/images/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" }
+  ]
+}

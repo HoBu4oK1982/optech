@@ -300,10 +300,9 @@ export async function getArticle(slug: string, locale: string = 'ru') {
   return data.article;
 }
 
-// База знаний / SEO-статьи. Бэкенд-эндпоинты (/knowledge-base,
-// /knowledge-base/{slug}) ещё не реализованы — делаем фронт сейчас,
-// backend подключим отдельным шагом. До этого момента запросы будут падать
-// в try/catch на страницах (пустой список / notFound), это ожидаемо.
+// База знаний / SEO-статьи. Материалы лежат в той же таблице articles, что и
+// новости, и отличаются полем type = knowledge_base; бэкенд отдаёт их
+// отдельными эндпоинтами /knowledge-base и /knowledge-base/{slug}.
 export async function getKnowledgeArticles(locale: string = 'ru') {
   const data = await fetchAPI('/knowledge-base', locale);
   return data.articles;

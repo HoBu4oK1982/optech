@@ -11,6 +11,9 @@ type Brand = {
   name: string;
   slug: string;
   image?: string | null;
+  /** image_alt / image_title из админки. */
+  image_alt?: string | null;
+  image_title?: string | null;
 };
 
 export default function BrandsGrid({
@@ -42,7 +45,8 @@ export default function BrandsGrid({
               {brand.image ? (
                 <Image
                   src={`${BACKEND_URL}/assets/images/brands/${brand.image}`}
-                  alt={brand.name}
+                  alt={brand.image_alt || brand.name}
+                  title={brand.image_title || undefined}
                   fill
                   sizes="(max-width: 600px) 45vw, (max-width: 1024px) 25vw, 200px"
                   onError={(e) => {

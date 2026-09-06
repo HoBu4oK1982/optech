@@ -4,7 +4,7 @@ import { locales, defaultLocale } from '@/i18n/translations';
 // Пути без префикса локали: служебные каталоги Next, статика из public/
 // и файлы, которые отдают отдельные роуты (robots.txt, sitemap.xml).
 const SKIP_PREFIXES = ['/_next', '/api', '/assets', '/images', '/sitemap'];
-const SKIP_FILES = new Set(['/robots.txt', '/sitemap.xml', '/favicon.ico', '/manifest.webmanifest']);
+const SKIP_FILES = new Set(['/robots.txt', '/sitemap.xml', '/favicon.ico', '/site.webmanifest', '/manifest.webmanifest']);
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -49,5 +49,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next|api|assets|images|favicon.ico|robots.txt|sitemap).*)'],
+  matcher: ['/((?!_next|api|assets|images|favicon.ico|robots.txt|sitemap|site.webmanifest).*)'],
 };

@@ -27,6 +27,10 @@ Route::get('projects', [FrontendController::class, 'getProjects']);
 Route::get('project/{project_slug}', [FrontendController::class, 'getProject']);
 Route::get('articles', [FrontendController::class, 'getArticles']);
 Route::get('article/{article_slug}', [FrontendController::class, 'getArticle']);
+
+// База знаний — те же статьи, но type = knowledge_base (раздел /basa-znani).
+Route::get('knowledge-base', [FrontendController::class, 'getKnowledgeArticles']);
+Route::get('knowledge-base/{article_slug}', [FrontendController::class, 'getKnowledgeArticle']);
 Route::get('services', [FrontendController::class, 'getServices']);
 Route::get('service/{service_slug}', [FrontendController::class, 'getService']);
 Route::get('offers', [FrontendController::class, 'getOffers']);

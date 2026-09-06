@@ -12,6 +12,9 @@ type Category = {
   slug: string;
   image?: string | null;
   children?: { id: number }[] | null;
+  /** image_alt / image_title из админки. */
+  image_alt?: string | null;
+  image_title?: string | null;
 };
 
 export default function CatalogGrid({
@@ -43,7 +46,8 @@ export default function CatalogGrid({
               {cat.image ? (
                 <Image
                   src={`${BACKEND_URL}/assets/images/categories/${cat.image}`}
-                  alt={cat.name}
+                  alt={cat.image_alt || cat.name}
+                  title={cat.image_title || undefined}
                   fill
                   sizes="(max-width: 600px) 45vw, (max-width: 1024px) 30vw, 300px"
                   onError={(e) => {

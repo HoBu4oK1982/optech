@@ -158,6 +158,8 @@ export default async function ProductPage({
     id: item.id,
     name: item.name,
     image: item.image,
+    imageAlt: item.image_alt,
+    imageTitle: item.image_title,
     sku: item.SKU,
     kind: 'product',
     href: `/${locale}/product/${item.slug || item.id}`,

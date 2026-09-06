@@ -3,6 +3,7 @@
 import { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
+import Icon from '@/components/ui/Icon';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
@@ -85,19 +86,19 @@ export default function Footer({
         <h2>{t('set_your_order_title')}</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <fieldset className="inputField">
-            <i className="fa-solid fa-user"></i>
+            <Icon name="user" className="fa-solid fa-user" />
             <input required className="modalInput" type="text" id="name" placeholder={t('modal_name')} autoComplete="off" {...register('name')} />
           </fieldset>
           <fieldset className="inputField">
-            <i className="fa-solid fa-phone-volume"></i>
+            <Icon name="phone" className="fa-solid fa-phone-volume" />
             <input required className="modalInput" type="tel" id="phone" autoComplete="off" placeholder={t('modal_phone')} {...register('phone')} />
           </fieldset>
           <fieldset className="inputField">
-            <i className="fas fa-envelope"></i>
+            <Icon name="envelope" className="fas fa-envelope" />
             <input required className="modalInput" type="email" id="email" autoComplete="off" placeholder={t('modal_email')} {...register('email')} />
           </fieldset>
           <fieldset className="inputField">
-            <i className="fas fa-comment"></i>
+            <Icon name="comment" className="fas fa-comment" />
             <textarea required className="modalInput modalTextarea" id="comment" autoComplete="off" placeholder={t('modal_comment')} {...register('comment')} />
           </fieldset>
           <button type="submit" className="modalInputBtn">{t('send_request_btn')}</button>
@@ -133,10 +134,10 @@ export default function Footer({
               <p>{t('slogan')}</p>
             </div>
             <div className="footerSocial">
-              <a href="https://www.linkedin.com/company/optech-2011/" target="_blank" rel="noreferrer"><i className="fab fa-linkedin"></i></a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer"><i className="fab fa-facebook"></i></a>
-              <a href="https://www.instagram.com/optech.kz/" target="_blank" rel="noreferrer"><i className="fab fa-instagram-square"></i></a>
-              <a href="https://www.youtube.com/@optechkz" target="_blank" rel="noreferrer"><i className="fab fa-youtube"></i></a>
+              <a href="https://www.linkedin.com/company/optech-2011/" target="_blank" rel="noreferrer"><Icon name="linkedin" className="fab fa-linkedin" /></a>
+              <a href="https://facebook.com" target="_blank" rel="noreferrer"><Icon name="facebook" className="fab fa-facebook" /></a>
+              <a href="https://www.instagram.com/optech.kz/" target="_blank" rel="noreferrer"><Icon name="instagram" className="fab fa-instagram-square" /></a>
+              <a href="https://www.youtube.com/@optechkz" target="_blank" rel="noreferrer"><Icon name="youtube" className="fab fa-youtube" /></a>
             </div>
             <div className="footerLegal">
               <Link href={L('/terms')}>{t('terms_page_title')}</Link>
@@ -146,19 +147,19 @@ export default function Footer({
           <div className="footerContactsWrap">
             <h3>{t('contacts_page_title')}</h3>
             <div className="footerContactItem">
-              <a href={`tel:${settings.phone}`}><i className="fas fa-phone-volume" aria-hidden="true"></i>{settings.phone}</a>
+              <a href={`tel:${settings.phone}`}><Icon name="phone" className="fas fa-phone-volume" />{settings.phone}</a>
             </div>
             <div className="footerContactItem">
-              <a href={`tel:${settings.city_phone}`}><i className="fas fa-phone-volume" aria-hidden="true"></i>{settings.city_phone}</a>
+              <a href={`tel:${settings.city_phone}`}><Icon name="phone" className="fas fa-phone-volume" />{settings.city_phone}</a>
             </div>
             <div className="footerContactItem">
-              <a href={`mailto:${settings.email}`}><i className="fas fa-envelope" aria-hidden="true"></i>{settings.email}</a>
+              <a href={`mailto:${settings.email}`}><Icon name="envelope" className="fas fa-envelope" />{settings.email}</a>
             </div>
             <div className="footerContactItem">
-              <p><i className="fas fa-clock"></i>{settings.work_time}</p>
+              <p><Icon name="clock" className="fas fa-clock" />{settings.work_time}</p>
             </div>
             <div className="footerContactItem">
-              <a href="https://go.2gis.com/sijyi" target="_blank" rel="noreferrer"><i className="fas fa-map-marker-alt"></i>{settings.address}</a>
+              <a href="https://go.2gis.com/sijyi" target="_blank" rel="noreferrer"><Icon name="location" className="fas fa-map-marker-alt" />{settings.address}</a>
             </div>
             <div className="footerBtn" onClick={() => modalRef.current?.open()}>
               {renderWithBr(t('submit_btn')).map((p, i) => (p === null ? <br key={i} /> : <span key={i}>{p}</span>))}

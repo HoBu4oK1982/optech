@@ -32,6 +32,8 @@ export default async function ProjectsPage({ params }: { params: { locale: strin
     title: p.title,
     href: `/${locale}/project/${p.slug}`,
     imageUrl: p.image ? `${BACKEND_URL}/assets/images/projects/${p.image}` : null,
+    imageAlt: p.image_alt,
+    imageTitle: p.image_title,
     excerpt: p.description ? truncateHtml(p.description, 120) : null,
   }));
 

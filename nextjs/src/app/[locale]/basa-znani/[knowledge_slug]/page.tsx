@@ -35,7 +35,7 @@ function knowledgeImageUrl(image?: string | null): string | null {
   if (image.startsWith('http')) return image;
   if (image.startsWith('/assets/')) return `${BACKEND_URL}${image}`;
   if (image.startsWith('assets/')) return `${BACKEND_URL}/${image}`;
-  return `${BACKEND_URL}/assets/images/knowledge-base/${image.replace(/^\/+/, '')}`;
+  return `${BACKEND_URL}/assets/images/articles/${image.replace(/^\/+/, '')}`;
 }
 
 function stripHtml(value?: string | null): string {
@@ -112,6 +112,8 @@ export default async function KnowledgeArticlePage({ params }: { params: { local
       title: article.title,
       href: `/${locale}/basa-znani/${article.slug}`,
       imageUrl: knowledgeImageUrl(article.image),
+      imageAlt: article.image_alt,
+      imageTitle: article.image_title,
       excerpt: article.description ? truncateHtml(article.description, 105) : null,
       date: formatCardDate(article.published_at || article.created_at),
     }));

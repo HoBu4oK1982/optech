@@ -719,10 +719,48 @@ class FrontendController extends Controller
 
     public function getArticles(Request $request)
     {
+        // Новости и материалы Базы знаний лежат в одной таблице; без фильтра
+        // по типу раздел «Новости» показывал бы и SEO-статьи тоже.
+        return $this->articlesOfType(Article::TYPE_ARTICLE, $request);
+    }
+
+    public function getArticle($article_slug, Request $request)
+    {
+        return $this->articleOfType(Article::TYPE_ARTICLE, $article_slug, $request);
+    }
+
+    // =========================================================================
+    // KNOWLEDGE BASE (/basa-znani)
+    // =========================================================================
+
+    public function getKnowledgeArticles(Request $request)
+    {
+        return $this->articlesOfType(Article::TYPE_KNOWLEDGE, $request);
+    }
+
+    public function getKnowledgeArticle($article_slug, Request $request)
+    {
+        return $this->articleOfType(Article::TYPE_KNOWLEDGE, $article_slug, $request);
+    }
+
+    /**
+     * Список материалов одного раздела.
+     *
+     * Материалы, созданные до появления колонки type, лежат с NULL — считаем
+     * их новостями, иначе после миграции раздел «Новости» опустел бы.
+     */
+    private function articlesOfType(string $type, Request $request)
+    {
         $locale = $this->localeOf($request);
 
         $articles = Article::where('status', 0)
-            ->orderBy('created_at', 'DESC')
+            ->where(function ($q) use ($type) {
+                $q->where('type', $type);
+                if ($type === Article::TYPE_ARTICLE) {
+                    $q->orWhereNull('type');
+                }
+            })
+            ->orderByRaw('COALESCE(published_at, created_at) DESC')
             ->get();
 
         $this->localizeCollection($articles, $locale);
@@ -733,11 +771,24 @@ class FrontendController extends Controller
         ]);
     }
 
-    public function getArticle($article_slug, Request $request)
+    private function articleOfType(string $type, string $slug, Request $request)
     {
         $locale = $this->localeOf($request);
 
-        $article = Article::where('slug', $article_slug)->where('status', 0)->first();
+        $article = Article::where('slug', $slug)
+            ->where('status', 0)
+            ->where(function ($q) use ($type) {
+                $q->where('type', $type);
+                if ($type === Article::TYPE_ARTICLE) {
+                    $q->orWhereNull('type');
+                }
+            })
+            ->first();
+
+        if (! $article) {
+            return response()->json(['status' => 404, 'article' => null], 404);
+        }
+
         $this->localizeModel($article, $locale);
 
         return response()->json([

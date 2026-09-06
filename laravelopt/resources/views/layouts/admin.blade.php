@@ -388,9 +388,65 @@
                         onChange: function (contents) {
                             el.value = contents;
                             el.dispatchEvent(new Event('input', { bubbles: true }));
+                        },
+                        onImageUpload: function (files) {
+                            richTextInsertImages($el, el, files);
                         }
                     }
                 });
+            });
+        }
+
+
+        /* Вставка картинок в Summernote.
+
+           Если у textarea задан data-richtext-folder, файл уходит отдельным
+           запросом на /admin/rich-text/image и в текст подставляется обычная
+           ссылка. Без этого Summernote зашивает картинку в HTML как
+           data:image, и она потом путешествует в теле каждого Livewire-запроса
+           при сохранении формы — пара фотографий превращали форму в мегабайты
+           base64.
+
+           Формы, где папка не указана, сохраняют прежнее поведение с base64:
+           их компоненты разбирают data:image на сервере сами. */
+        function richTextInsertImages($el, el, files) {
+            var folder = el.dataset.richtextFolder;
+
+            if (!folder) {
+                Array.prototype.forEach.call(files, function (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $el.summernote('insertImage', e.target.result); };
+                    reader.readAsDataURL(file);
+                });
+                return;
+            }
+
+            var token = document.querySelector('meta[name="csrf-token"]');
+
+            Array.prototype.forEach.call(files, function (file) {
+                var data = new FormData();
+                data.append('file', file);
+                data.append('folder', folder);
+
+                fetch('/admin/rich-text/image', {
+                    method: 'POST',
+                    headers: { 'X-CSRF-TOKEN': token ? token.content : '', 'Accept': 'application/json' },
+                    body: data,
+                    credentials: 'same-origin'
+                })
+                    .then(function (r) { return r.json().then(function (b) { return { ok: r.ok, body: b }; }); })
+                    .then(function (res) {
+                        if (!res.ok || !res.body.url) {
+                            throw new Error(res.body.message || 'Не удалось загрузить изображение');
+                        }
+                        $el.summernote('insertImage', res.body.url, function ($image) {
+                            $image.attr('alt', file.name.replace(/\.[^.]+$/, ''));
+                        });
+                    })
+                    .catch(function (e) {
+                        if (window.adToast) adToast(e.message, 'error');
+                        else alert(e.message);
+                    });
             });
         }
 

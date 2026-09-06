@@ -22,6 +22,14 @@ const HREFLANG: Record<string, string> = { ru: 'ru', en: 'en', kz: 'kk' };
 
 const OG_LOCALE: Record<string, string> = { ru: 'ru_RU', en: 'en_US', kz: 'kk_KZ' };
 
+/**
+ * Картинка для соцсетей, когда у страницы своей нет: логотип на фирменном
+ * тёмном фоне, 1200×630. Без неё ссылка на сайт в мессенджере или соцсети
+ * разворачивалась вообще без превью — а это первое, что видит человек, когда
+ * ему присылают ссылку.
+ */
+const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/images/og-default.png`;
+
 /** Значение атрибута <html lang>. Тот же BCP-47, что и в hreflang. */
 export function htmlLang(locale: string): string {
   return HREFLANG[locale] || HREFLANG.ru;
@@ -119,6 +127,8 @@ export function buildMetadata(opts: {
   const alternates = buildAlternates({ locale, path, canonicalOverride: e.canonical_url });
   const canonical = (alternates as { canonical: string }).canonical;
 
+  const image = ogImage || DEFAULT_OG_IMAGE;
+
   return {
     // meta_title заполнен вручную в админке — это законченный тайтл, шаблон
     // `%s | OPTECH` из layout к нему дописывать нельзя (переполнение по длине
@@ -139,12 +149,21 @@ export function buildMetadata(opts: {
     openGraph: {
       title: ogTitle,
       description: ogDescription,
-      images: ogImage ? [ogImage] : [],
+      images: [image],
       url: canonical,
       type: ogType,
       siteName: 'OPTECH',
       locale: OG_LOCALE[locale] || OG_LOCALE.ru,
       alternateLocale: locales.filter((l) => l !== locale).map((l) => OG_LOCALE[l]),
+    },
+    // Twitter читает свои теги и не подхватывает og:* автоматически, поэтому
+    // без этого блока превью в X/Twitter не было вовсе. summary_large_image —
+    // широкая карточка под картинку 1200×630.
+    twitter: {
+      card: 'summary_large_image',
+      title: ogTitle,
+      description: ogDescription,
+      images: [image],
     },
   };
 }

@@ -33,6 +33,8 @@ export default async function ServicesPage({ params }: { params: { locale: strin
     title: s.title,
     href: `/${locale}/service/${s.slug}`,
     imageUrl: s.image ? `${BACKEND_URL}/assets/images/services/${s.image}` : null,
+    imageAlt: s.image_alt,
+    imageTitle: s.image_title,
     excerpt: s.description ? truncateHtml(s.description, 120) : null,
   }));
 

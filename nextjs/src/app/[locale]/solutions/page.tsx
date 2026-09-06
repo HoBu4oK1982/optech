@@ -33,6 +33,8 @@ export default async function SolutionsPage({ params }: { params: { locale: stri
     title: c.title,
     href: `/${locale}/solutions/${c.slug}`,
     imageUrl: c.image ? `${BACKEND_URL}/assets/images/solcategories/${c.image}` : null,
+    imageAlt: c.image_alt,
+    imageTitle: c.image_title,
     excerpt: c.description ? truncateHtml(c.description, 120) : null,
   }));
 

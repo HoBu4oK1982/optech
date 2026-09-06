@@ -10,6 +10,9 @@ export type SectionItem = {
   title: string;
   href: string;
   imageUrl?: string | null;
+  /** image_alt / image_title из админки; без них alt подставляется из заголовка. */
+  imageAlt?: string | null;
+  imageTitle?: string | null;
   excerpt?: string | null;
   date?: string | null;
 };
@@ -51,7 +54,8 @@ export default function SectionGrid({
               {it.imageUrl ? (
                 <Image
                   src={it.imageUrl}
-                  alt={it.title}
+                  alt={it.imageAlt || it.title}
+                  title={it.imageTitle || undefined}
                   fill
                   sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   onError={hideOnError}

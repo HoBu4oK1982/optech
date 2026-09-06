@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
+import Icon from '@/components/ui/Icon';
 import gsap from 'gsap';
 import './mobileNavDrawer.css';
 
@@ -104,7 +105,7 @@ export default function MobileNavDrawer({
           {items.map((item) => (
             <Link key={item.href} href={item.href} className="mNav__link" onClick={onClose}>
               {item.icon === 'home' ? (
-                <i className="fa-solid fa-house-chimney" aria-hidden />
+                <Icon name="home" className="fa-solid fa-house-chimney" />
               ) : (
                 <span className="mNav__linkText">{item.label}</span>
               )}

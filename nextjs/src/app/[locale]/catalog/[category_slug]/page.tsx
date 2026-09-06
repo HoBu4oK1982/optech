@@ -82,6 +82,8 @@ export default async function CategoryPage({
         id: sub.id,
         name: sub.name,
         image: sub.image,
+        imageAlt: sub.image_alt,
+        imageTitle: sub.image_title,
         kind: 'category',
         href: `/${locale}/catalog/${category_slug}/${sub.slug}`,
       }))
@@ -89,6 +91,8 @@ export default async function CategoryPage({
         id: p.id,
         name: p.name,
         image: p.image,
+        imageAlt: p.image_alt,
+        imageTitle: p.image_title,
         sku: p.SKU,
         kind: 'product',
         href: `/${locale}/product/${p.slug}`,

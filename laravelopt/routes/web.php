@@ -43,6 +43,12 @@ Route::redirect('/', 'login'); //Redirect to login anyway
 Route::get('/register', function () {return redirect('/');}); //Close permission to register
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+
+    // Приём картинок из Summernote: файл уходит сразу при вставке, в текст
+    // подставляется ссылка (см. RichTextImageController).
+    Route::post('/admin/rich-text/image', [\App\Http\Controllers\RichTextImageController::class, 'store'])
+        ->name('admin.richtext.image');
+
     Route::view('/dashboard', 'dashboard')->name('dashboard');
 
     //Categories

@@ -31,4 +31,23 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Anthropic (Claude) — генерация SEO-текстов категорий
+    |--------------------------------------------------------------------------
+    |
+    | Используется командой `php artisan optech:seo:generate`. Обращение к API
+    | идёт обычным Http-клиентом Laravel, без SDK.
+    |
+    */
+
+    'anthropic' => [
+        'key' => env('ANTHROPIC_API_KEY'),
+        'model' => env('ANTHROPIC_MODEL', 'claude-sonnet-4-6'),
+        'version' => env('ANTHROPIC_VERSION', '2023-06-01'),
+        'endpoint' => env('ANTHROPIC_ENDPOINT', 'https://api.anthropic.com/v1/messages'),
+        // Секунды: генерация с веб-поиском идёт заметно дольше обычного запроса.
+        'timeout' => (int) env('ANTHROPIC_TIMEOUT', 300),
+    ],
+
 ];

@@ -70,7 +70,8 @@ export default async function HomePage({ params }: { params: { locale: string } 
         <div className="articlesItemImgWrap">
           <img
             src={`${BACKEND_URL}/assets/images/articles/${item.image}`}
-            alt={item.title}
+            alt={item.image_alt || item.title}
+            title={item.image_title || undefined}
             className="articlesItemImg"
             loading="lazy"
             decoding="async"
@@ -88,7 +89,8 @@ export default async function HomePage({ params }: { params: { locale: string } 
     <Link key={idx} href={L(`/solutions/${item.slug}`)} className="solutionItem">
       <Image
         src={`${BACKEND_URL}/assets/images/solcategories/${item.image}`}
-        alt={`${item.title}`}
+        alt={item.image_alt || `${item.title}`}
+        title={item.image_title || undefined}
         width={293}
         height={189}
         className="solutionItemImg"
@@ -120,7 +122,8 @@ export default async function HomePage({ params }: { params: { locale: string } 
                 <h3>{category.name}</h3>
                 <img
                   src={`${BACKEND_URL}/assets/images/categories/${category.image}`}
-                  alt={category.name}
+                  alt={category.image_alt || category.name}
+                  title={category.image_title || undefined}
                   loading="lazy"
                   decoding="async"
                 />

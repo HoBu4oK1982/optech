@@ -20,22 +20,33 @@
                     </div>
                     <div class="ad-langpane is-active" data-lang="ru">
                         <label class="ad-field"><span>Заголовок (RU) *</span><input type="text" wire:model="title_ru" wire:blur="generateSlug">@error('title_ru')<span class="ad-field-error">{{ $message }}</span>@enderror</label>
-                        <div class="ad-field" wire:ignore><span>Анонс / лид (RU)</span><textarea data-richtext wire:model.blur="excerpt">{!! $excerpt ?? '' !!}</textarea></div>
-                        <div class="ad-field" wire:ignore><span>Текст статьи (RU)</span><textarea data-richtext wire:model.blur="description_ru">{!! $description_ru ?? '' !!}</textarea></div>
+                        <div class="ad-field" wire:ignore><span>Анонс / лид (RU)</span><textarea data-richtext data-richtext-folder="articles" wire:model.blur="excerpt">{!! $excerpt ?? '' !!}</textarea></div>
+                        <div class="ad-field" wire:ignore><span>Текст статьи (RU)</span><textarea data-richtext data-richtext-folder="articles" wire:model.blur="description_ru">{!! $description_ru ?? '' !!}</textarea></div>
                     </div>
                     <div class="ad-langpane" data-lang="en">
                         <label class="ad-field"><span>Заголовок (EN)</span><input type="text" wire:model="title_en"></label>
-                        <div class="ad-field" wire:ignore><span>Анонс (EN)</span><textarea data-richtext wire:model.blur="excerpt_en">{!! $excerpt_en ?? '' !!}</textarea></div>
-                        <div class="ad-field" wire:ignore><span>Текст (EN)</span><textarea data-richtext wire:model.blur="description_en">{!! $description_en ?? '' !!}</textarea></div>
+                        <div class="ad-field" wire:ignore><span>Анонс (EN)</span><textarea data-richtext data-richtext-folder="articles" wire:model.blur="excerpt_en">{!! $excerpt_en ?? '' !!}</textarea></div>
+                        <div class="ad-field" wire:ignore><span>Текст (EN)</span><textarea data-richtext data-richtext-folder="articles" wire:model.blur="description_en">{!! $description_en ?? '' !!}</textarea></div>
                     </div>
                     <div class="ad-langpane" data-lang="kz">
                         <label class="ad-field"><span>Заголовок (KZ)</span><input type="text" wire:model="title_kz"></label>
-                        <div class="ad-field" wire:ignore><span>Анонс (KZ)</span><textarea data-richtext wire:model.blur="excerpt_kz">{!! $excerpt_kz ?? '' !!}</textarea></div>
-                        <div class="ad-field" wire:ignore><span>Текст (KZ)</span><textarea data-richtext wire:model.blur="description_kz">{!! $description_kz ?? '' !!}</textarea></div>
+                        <div class="ad-field" wire:ignore><span>Анонс (KZ)</span><textarea data-richtext data-richtext-folder="articles" wire:model.blur="excerpt_kz">{!! $excerpt_kz ?? '' !!}</textarea></div>
+                        <div class="ad-field" wire:ignore><span>Текст (KZ)</span><textarea data-richtext data-richtext-folder="articles" wire:model.blur="description_kz">{!! $description_kz ?? '' !!}</textarea></div>
                     </div>
                 </div>
                 <div class="ad-fields-grid two" style="margin-top:14px;">
                     <label class="ad-field"><span>URL (slug) *</span><input type="text" wire:model="slug">@error('slug')<span class="ad-field-error">{{ $message }}</span>@enderror</label>
+                    <label class="ad-field">
+                        <span>Раздел сайта *</span>
+                        <select wire:model="type">
+                            @foreach(\App\Models\Article::TYPES as $value => $label)
+                                <option value="{{ $value }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        <small class="ad-counter">«Новость» — раздел /articles, «База знаний» — /basa-znani</small>
+                    </label>
+                </div>
+                <div class="ad-fields-grid two" style="margin-top:14px;">
                     <label class="ad-field"><span>Категория статьи</span><select wire:model="category_id"><option value="">— нет —</option>@foreach($categories as $c)<option value="{{ $c->id }}">{{ $c->name }}</option>@endforeach</select></label>
                 </div>
             </section>
@@ -55,11 +66,12 @@
                 <div class="ad-section-head"><span class="ad-section-icon"><i class="fas fa-image"></i></span><div><h3>Изображения</h3></div></div>
                 <div class="ad-fields-grid two">
                     <div class="ad-field"><span>Обложка</span>
+                        <small class="ad-counter">В списке материалов обрезается по 16:10 (как карточки в «Решениях»). Старый файл удаляется автоматически при замене.</small>
                         <div class="ad-upload">
                             <input type="file" class="ad-upload__input" id="art-img" wire:model="image" accept="image/*">
                             @if($image)<div class="ad-upload__preview"><img src="{{ $image->temporaryUrl() }}"></div>
                             @elseif(!empty($existing_image))<div class="ad-upload__preview"><img src="{{ file_exists(public_path('assets/images/articles/'.$existing_image)) ? asset('assets/images/articles/'.$existing_image) : asset('assets/images/articles/'.$existing_image) }}"></div>@endif
-                            <label for="art-img" class="ad-upload__zone"><div class="ad-upload__icon"><i class="fas fa-cloud-upload-alt"></i></div><div class="ad-upload__text"><strong>Загрузить</strong><span>до 5 МБ</span></div></label>
+                            <label for="art-img" class="ad-upload__zone"><div class="ad-upload__icon"><i class="fas fa-cloud-upload-alt"></i></div><div class="ad-upload__text"><strong>Загрузить</strong><span>16:10, от 800×500, до 5 МБ</span></div></label>
                         </div>
                     </div>
                     <div class="ad-field"><span>OG-картинка</span>

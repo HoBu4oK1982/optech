@@ -19,6 +19,8 @@ class EditArticleComponent extends Component
     public $articleId, $existing_image, $existing_og_image;
 
     public $title_ru, $title_en, $title_kz, $slug, $status = 0, $sort_order = 0;
+    /** article | knowledge_base — в какой раздел сайта попадёт материал. */
+    public $type = Article::TYPE_ARTICLE;
     public $description_ru, $description_en, $description_kz;
     public $excerpt, $excerpt_en, $excerpt_kz;
     public $category_id, $author, $source, $published_at, $reading_time, $tags;
@@ -42,6 +44,7 @@ class EditArticleComponent extends Component
             'slug' => 'required|unique:articles,slug,' . $this->articleId,
             'image' => 'nullable|image|max:5120',
             'og_image' => 'nullable|image|max:5120',
+            'type' => 'required|in:article,knowledge_base',
         ];
     }
     protected $messages = ['slug.unique' => 'Такой URL (slug) уже существует!'];
@@ -52,6 +55,7 @@ class EditArticleComponent extends Component
         $this->articleId = $a->id;
         $this->title_ru = $a->title_ru; $this->title_en = $a->title_en; $this->title_kz = $a->title_kz;
         $this->slug = $a->slug;
+        $this->type = $a->type ?: Article::TYPE_ARTICLE;
         $this->description_ru = $a->description_ru; $this->description_en = $a->description_en; $this->description_kz = $a->description_kz;
         $this->excerpt = $a->excerpt; $this->excerpt_en = $a->excerpt_en; $this->excerpt_kz = $a->excerpt_kz;
         $this->category_id = $a->category_id; $this->author = $a->author; $this->source = $a->source;
@@ -85,8 +89,15 @@ class EditArticleComponent extends Component
         $a = Article::findOrFail($this->articleId);
         $a->title_ru = $this->title_ru; $a->title_en = $this->title_en; $a->title_kz = $this->title_kz;
         $a->slug = $this->slug;
+        $a->type = $this->type;
+
+        // Тексты ДО правки — по ним потом поймём, какие картинки удалили
+        // из редактора, чтобы не копить мусор в /assets/images/articles.
+        $htmlBefore = [$a->description_ru, $a->description_en, $a->description_kz];
+
         $a->description_ru = $this->processInlineImages($this->description_ru, 'articles');
-        $a->description_en = $this->description_en; $a->description_kz = $this->description_kz;
+        $a->description_en = $this->processInlineImages($this->description_en, 'articles');
+        $a->description_kz = $this->processInlineImages($this->description_kz, 'articles');
         $a->excerpt = $this->excerpt; $a->excerpt_en = $this->excerpt_en; $a->excerpt_kz = $this->excerpt_kz;
         $a->category_id = $this->category_id ?: null;
         $a->author = $this->author; $a->source = $this->source;
@@ -111,15 +122,38 @@ class EditArticleComponent extends Component
         $a->in_sitemap = (bool) $this->in_sitemap;
         $a->sitemap_priority = $this->sitemap_priority;
 
+        // При замене обложки старый файл раньше оставался на диске навсегда:
+        // имя генерируется новое, ссылки на прежний файл больше нет.
         if ($this->image) {
+            $previous = $a->image;
             $n = Carbon::now()->timestamp . '_' . Str::random(5) . '.' . $this->image->extension();
-            $this->image->storeAs('articles', $n); $a->image = $n;
+            $this->image->storeAs('articles', $n);
+            $a->image = $n;
+            if ($previous && $previous !== $n) {
+                $this->deleteStoredImage($previous, 'articles');
+            }
         }
         if ($this->og_image) {
-            $n = 'og_' . Carbon::now()->timestamp . '.' . $this->og_image->extension();
-            $this->og_image->storeAs('articles', $n); $a->og_image = $n;
+            $previous = $a->og_image;
+            $n = 'og_' . Carbon::now()->timestamp . '_' . Str::random(5) . '.' . $this->og_image->extension();
+            $this->og_image->storeAs('articles', $n);
+            $a->og_image = $n;
+            if ($previous && $previous !== $n) {
+                $this->deleteStoredImage($previous, 'articles');
+            }
         }
+
         $a->save();
+
+        // Чистим картинки, которые автор удалил из текста.
+        $this->deleteOrphanInlineImages(
+            $htmlBefore,
+            [$a->description_ru, $a->description_en, $a->description_kz],
+            'articles'
+        );
+
+        $this->existing_image = $a->image;
+        $this->existing_og_image = $a->og_image;
 
         session()->flash('success', 'Статья обновлена.');
         return redirect()->route('articles');

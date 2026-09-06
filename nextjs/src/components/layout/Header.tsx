@@ -3,6 +3,7 @@
 import { useEffect, useState, forwardRef, useImperativeHandle, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
+import Icon from '@/components/ui/Icon';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -87,19 +88,19 @@ export default function Header({
         <h2>{t('set_your_order_title')}</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <fieldset className="inputField">
-            <i className="fa-solid fa-user"></i>
+            <Icon name="user" className="fa-solid fa-user" />
             <input required className="modalInput" type="text" id="name" placeholder={t('modal_name')} autoComplete="off" {...register('name')} />
           </fieldset>
           <fieldset className="inputField">
-            <i className="fa-solid fa-phone-volume"></i>
+            <Icon name="phone" className="fa-solid fa-phone-volume" />
             <input required className="modalInput" type="tel" id="phone" autoComplete="off" placeholder={t('modal_phone')} {...register('phone')} />
           </fieldset>
           <fieldset className="inputField">
-            <i className="fas fa-envelope"></i>
+            <Icon name="envelope" className="fas fa-envelope" />
             <input required className="modalInput" type="email" id="email" autoComplete="off" placeholder={t('modal_email')} {...register('email')} />
           </fieldset>
           <fieldset className="inputField">
-            <i className="fas fa-comment"></i>
+            <Icon name="comment" className="fas fa-comment" />
             <textarea required className="modalInput modalTextarea" id="comment" autoComplete="off" placeholder={t('modal_comment')} {...register('comment')} />
           </fieldset>
           <button type="submit" className="modalInputBtn">{t('send_request_btn')}</button>
@@ -120,11 +121,11 @@ export default function Header({
             </nav>
             <div className="headerHeadTopRight">
               <div className="headerHeadLink">
-                <i className="fas fa-phone-volume" aria-hidden="true"></i>
+                <Icon name="phone" className="fas fa-phone-volume" />
                 <a href={`tel:${settings.phone}`}>{settings.phone}</a>
               </div>
               <div className="headerHeadLink">
-                <i className="fas fa-envelope" aria-hidden="true"></i>
+                <Icon name="envelope" className="fas fa-envelope" />
                 <a href={`mailto:${settings.email}`}>{settings.email}</a>
               </div>
               <div className="headerLang">
@@ -204,11 +205,11 @@ export default function Header({
 
               <div className="headerMobileBar__text">
                 <a href={`tel:${settings.phone}`}>
-                  <i className="fas fa-phone-volume" aria-hidden="true"></i>
+                  <Icon name="phone" className="fas fa-phone-volume" />
                   {settings.phone}
                 </a>
                 <a href={`mailto:${settings.email}`}>
-                  <i className="fas fa-envelope" aria-hidden="true"></i>
+                  <Icon name="envelope" className="fas fa-envelope" />
                   {settings.email}
                 </a>
               </div>

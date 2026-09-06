@@ -11,8 +11,19 @@ class Article extends Model
 
     protected $table = 'articles';
 
+    /** Обычная новость — раздел /articles. */
+    public const TYPE_ARTICLE = 'article';
+
+    /** Материал Базы знаний — раздел /basa-znani. */
+    public const TYPE_KNOWLEDGE = 'knowledge_base';
+
+    public const TYPES = [
+        self::TYPE_ARTICLE => 'Новость',
+        self::TYPE_KNOWLEDGE => 'База знаний',
+    ];
+
     protected $fillable = [
-        'title_ru', 'slug', 'description_ru',
+        'title_ru', 'slug', 'type', 'description_ru',
         'title_en', 'description_en', 'title_kz', 'description_kz',
         'status', 'image', 'category_id',
         'meta_title', 'meta_description', 'meta_keywords',

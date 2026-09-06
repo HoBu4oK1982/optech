@@ -1,5 +1,6 @@
 'use client';
 
+import Icon from '@/components/ui/Icon';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -110,7 +111,7 @@ export default function ProductInquiry({
               ) : (
                 <form onSubmit={onSubmit}>
                   <fieldset className="inputField">
-                    <i className="fa-solid fa-user"></i>
+                    <Icon name="user" className="fa-solid fa-user" />
                     <input
                       required
                       className="modalInput"
@@ -122,7 +123,7 @@ export default function ProductInquiry({
                     />
                   </fieldset>
                   <fieldset className="inputField">
-                    <i className="fa-solid fa-phone-volume"></i>
+                    <Icon name="phone" className="fa-solid fa-phone-volume" />
                     <input
                       required
                       className="modalInput"
@@ -134,7 +135,7 @@ export default function ProductInquiry({
                     />
                   </fieldset>
                   <fieldset className="inputField">
-                    <i className="fas fa-envelope"></i>
+                    <Icon name="envelope" className="fas fa-envelope" />
                     <input
                       className="modalInput"
                       type="email"
@@ -145,7 +146,7 @@ export default function ProductInquiry({
                     />
                   </fieldset>
                   <fieldset className="inputField">
-                    <i className="fas fa-comment"></i>
+                    <Icon name="comment" className="fas fa-comment" />
                     <textarea
                       className="modalInput modalTextarea"
                       placeholder={labels.leaveComment}

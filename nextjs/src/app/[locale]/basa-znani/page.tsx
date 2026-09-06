@@ -44,7 +44,9 @@ export default async function KnowledgeBasePage({ params }: { params: { locale: 
     id: a.id,
     title: a.title,
     href: `/${locale}/basa-znani/${a.slug}`,
-    imageUrl: a.image ? `${BACKEND_URL}/assets/images/knowledge-base/${a.image}` : null,
+    imageUrl: a.image ? `${BACKEND_URL}/assets/images/articles/${a.image}` : null,
+    imageAlt: a.image_alt,
+    imageTitle: a.image_title,
     excerpt: a.description ? truncateHtml(a.description, 120) : null,
     date: formatCardDate(a.published_at || a.created_at),
   }));

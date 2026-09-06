@@ -32,6 +32,8 @@ export default async function OffersPage({ params }: { params: { locale: string 
     title: o.title,
     href: `/${locale}/offer/${o.slug}`,
     imageUrl: o.image ? `${BACKEND_URL}/assets/images/offers/${o.image}` : null,
+    imageAlt: o.image_alt,
+    imageTitle: o.image_title,
     excerpt: o.description ? truncateHtml(o.description, 120) : null,
   }));
 

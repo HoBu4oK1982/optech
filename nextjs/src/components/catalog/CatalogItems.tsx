@@ -13,6 +13,9 @@ export type CatalogItem = {
   image?: string | null;
   kind: 'category' | 'product';
   sku?: string | null;
+  /** image_alt / image_title из админки. */
+  imageAlt?: string | null;
+  imageTitle?: string | null;
 };
 
 function hideOnError(e: React.SyntheticEvent<HTMLImageElement>) {
@@ -56,7 +59,8 @@ export default function CatalogItems({
         const media = imgSrc ? (
           <Image
             src={imgSrc}
-            alt={item.name}
+            alt={item.imageAlt || item.name}
+            title={item.imageTitle || undefined}
             fill
             sizes="(max-width: 600px) 45vw, (max-width: 1024px) 30vw, 300px"
             onError={hideOnError}

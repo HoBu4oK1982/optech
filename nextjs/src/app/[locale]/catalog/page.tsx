@@ -40,6 +40,8 @@ export default async function CatalogPage({
     id: c.id,
     name: c.name,
     image: c.image,
+    imageAlt: c.image_alt,
+    imageTitle: c.image_title,
     kind: 'category',
     href: `/${locale}/catalog/${c.slug}`,
   }));

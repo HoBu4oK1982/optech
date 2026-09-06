@@ -69,6 +69,8 @@ export default async function BrandPage({
     id: p.id,
     name: p.name,
     image: p.image,
+    imageAlt: p.image_alt,
+    imageTitle: p.image_title,
     sku: p.SKU,
     kind: 'product',
     href: `/${locale}/product/${p.slug}`,

@@ -17,6 +17,8 @@ class AddArticleComponent extends Component
     use WithFileUploads, WithRepeaters, WithRichText;
 
     public $title_ru, $title_en, $title_kz, $slug, $status = 0, $sort_order = 0;
+    /** article | knowledge_base — в какой раздел сайта попадёт материал. */
+    public $type = Article::TYPE_ARTICLE;
     public $description_ru, $description_en, $description_kz;
     public $excerpt, $excerpt_en, $excerpt_kz;
     public $category_id, $author, $source, $published_at, $reading_time, $tags;
@@ -39,6 +41,7 @@ class AddArticleComponent extends Component
         'slug' => 'required|unique:articles,slug',
         'image' => 'nullable|image|max:5120',
         'og_image' => 'nullable|image|max:5120',
+        'type' => 'required|in:article,knowledge_base',
     ];
     protected $messages = ['slug.unique' => 'Такой URL (slug) уже существует!'];
 
@@ -51,8 +54,14 @@ class AddArticleComponent extends Component
         $a = new Article();
         $a->title_ru = $this->title_ru; $a->title_en = $this->title_en; $a->title_kz = $this->title_kz;
         $a->slug = $this->slug;
+        $a->type = $this->type;
+        // Картинки из редактора приходят уже ссылками (их принимает
+        // RichTextImageController). processInlineImages остаётся для случая,
+        // когда картинку вставили копипастом — тогда она приходит как base64,
+        // и это касается всех трёх языков, а не только русского.
         $a->description_ru = $this->processInlineImages($this->description_ru, 'articles');
-        $a->description_en = $this->description_en; $a->description_kz = $this->description_kz;
+        $a->description_en = $this->processInlineImages($this->description_en, 'articles');
+        $a->description_kz = $this->processInlineImages($this->description_kz, 'articles');
         $a->excerpt = $this->excerpt; $a->excerpt_en = $this->excerpt_en; $a->excerpt_kz = $this->excerpt_kz;
         $a->category_id = $this->category_id ?: null;
         $a->author = $this->author; $a->source = $this->source;
