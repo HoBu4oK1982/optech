@@ -1,4 +1,20 @@
-export const dynamic = "force-dynamic";
+// ISR: контентный раздел, пересборка не чаще раза в 10 минут
+// (см. комментарий про force-dynamic в app/[locale]/page.tsx).
+export const revalidate = 600;
+/**
+ * Пустой generateStaticParams — не «заглушка», а условие включения ISR.
+ * Без него Next считает маршрут с динамическим сегментом полностью
+ * динамическим: страница рендерится на КАЖДЫЙ запрос и в кэш маршрутов не
+ * попадает (Cache-Control: no-store). С ним страница рендерится один раз при
+ * первом обращении и дальше отдаётся из кэша до истечения revalidate.
+ * Список путей возвращаем пустой намеренно: прогревать весь каталог на
+ * билде незачем, страницы наполняют кэш по мере обращений.
+ */
+export async function generateStaticParams() {
+  return [];
+}
+
+import Image from 'next/image';
 import { Metadata } from 'next';
 import { getTranslations } from '@/i18n/translations';
 import { getProject } from '@/lib/api';
@@ -15,7 +31,8 @@ export async function generateMetadata({ params }: { params: { locale: string; p
     entity: item,
     fallbackTitle: item.title,
     ogImage: item.og_image ? storageUrl(item.og_image) : item.image ? storageUrl(item.image) : null,
-    canonicalPath: `/${params.locale}/project/${params.project_slug}`,
+    locale: params.locale,
+    path: `/project/${params.project_slug}`,
   });
 }
 
@@ -63,12 +80,15 @@ export default async function ProjectDetailPage({ params }: { params: { locale: 
         )}
 
         {item.image && (
-          <div className="mb-8 rounded-xl overflow-hidden">
-            <img
+          <div className="relative mb-8 aspect-[16/9] max-h-[500px] overflow-hidden rounded-xl">
+            <Image
               src={storageUrl(item.image)}
               alt={item.image_alt || item.title}
               title={item.image_title || undefined}
-              className="w-full object-cover max-h-[500px]"
+              fill
+              sizes="(max-width: 1024px) 100vw, 896px"
+              className="object-cover"
+              priority
             />
           </div>
         )}

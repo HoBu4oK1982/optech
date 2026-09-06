@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { BACKEND_URL } from '@/lib/constants';
@@ -40,10 +41,11 @@ export default function CatalogGrid({
 
             <div className="catCard__media">
               {cat.image ? (
-                <img
+                <Image
                   src={`${BACKEND_URL}/assets/images/categories/${cat.image}`}
                   alt={cat.name}
-                  loading="lazy"
+                  fill
+                  sizes="(max-width: 600px) 45vw, (max-width: 1024px) 30vw, 300px"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).style.display = 'none';
                   }}

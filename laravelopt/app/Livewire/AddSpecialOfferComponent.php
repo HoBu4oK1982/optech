@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Livewire\Concerns\HasSeoFields;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -13,15 +14,13 @@ use DOMDocument;
 class AddSpecialOfferComponent extends Component
 {
     use WithFileUploads;
+    use HasSeoFields;
 
     public $title_ru;
     public $description_ru;
     public $slug;
     public $image;
     public $status;
-    public $meta_keywords;
-    public $meta_description;
-    public $meta_title;
 
     protected $rules = [
         'title_ru' => 'required',
@@ -75,9 +74,7 @@ class AddSpecialOfferComponent extends Component
 
             $offer->description_ru = $this->description_ru;
             $offer->status = $this->status == NULL ? 0 : $this->status;
-            $offer->meta_keywords = $this->meta_keywords;
-            $offer->meta_title = $this->meta_title;
-            $offer->meta_description = $this->meta_description;
+            $this->applySeoFields($offer, 'offers');
 
             $imageName = Carbon::now()->timestamp . '.' . $this->image->extension();
             $this->image->storeAs('offers', $imageName);

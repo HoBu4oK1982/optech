@@ -1,6 +1,24 @@
-export const dynamic = 'force-dynamic';
+// ISR: страница пересобирается не чаще раза в 5 минут. Раньше здесь стоял
+// force-dynamic — он не только рендерил страницу на каждый запрос, но и
+// отключал кэш fetch (next.revalidate в lib/api.ts игнорировался), так что
+// каждый заход бота бил в Laravel напрямую.
+export const revalidate = 300;
+
+/**
+ * Пустой generateStaticParams — не «заглушка», а условие включения ISR.
+ * Без него Next считает маршрут с динамическим сегментом полностью
+ * динамическим: страница рендерится на КАЖДЫЙ запрос и в кэш маршрутов не
+ * попадает (Cache-Control: no-store). С ним страница рендерится один раз при
+ * первом обращении и дальше отдаётся из кэша до истечения revalidate.
+ * Список путей возвращаем пустой намеренно: прогревать весь каталог на
+ * билде незачем, страницы наполняют кэш по мере обращений.
+ */
+export async function generateStaticParams() {
+  return [];
+}
 
 import { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getTranslations } from '@/i18n/translations';
@@ -85,7 +103,8 @@ export async function generateMetadata({
     entity: p,
     fallbackTitle: p.name,
     ogImage: img,
-    canonicalPath: `/${params.locale}/product/${params.product_slug}`,
+    locale: params.locale,
+    path: `/product/${params.product_slug}`,
   });
 }
 
@@ -204,7 +223,14 @@ export default async function ProductPage({
           <div className="productTop">
             <div className="productGallery">
               {imgSrc ? (
-                <img src={imgSrc} alt={imgAlt} title={product.image_title || undefined} />
+                <Image
+                  src={imgSrc}
+                  alt={imgAlt}
+                  title={product.image_title || undefined}
+                  fill
+                  sizes="(max-width: 900px) 100vw, 560px"
+                  priority
+                />
               ) : (
                 <span className="productGallery__empty" />
               )}

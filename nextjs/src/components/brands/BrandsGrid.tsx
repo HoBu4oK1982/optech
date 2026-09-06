@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { BACKEND_URL } from '@/lib/constants';
@@ -39,10 +40,11 @@ export default function BrandsGrid({
           <Link href={`/${locale}/brand/${brand.slug}`} className="brandCard">
             <div className="brandCard__logo">
               {brand.image ? (
-                <img
+                <Image
                   src={`${BACKEND_URL}/assets/images/brands/${brand.image}`}
                   alt={brand.name}
-                  loading="lazy"
+                  fill
+                  sizes="(max-width: 600px) 45vw, (max-width: 1024px) 25vw, 200px"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).style.display = 'none';
                   }}

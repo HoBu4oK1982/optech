@@ -1,4 +1,19 @@
-export const dynamic = 'force-dynamic';
+// ISR: контентный раздел, пересборка не чаще раза в 10 минут
+// (см. комментарий про force-dynamic в app/[locale]/page.tsx).
+export const revalidate = 600;
+/**
+ * Пустой generateStaticParams — не «заглушка», а условие включения ISR.
+ * Без него Next считает маршрут с динамическим сегментом полностью
+ * динамическим: страница рендерится на КАЖДЫЙ запрос и в кэш маршрутов не
+ * попадает (Cache-Control: no-store). С ним страница рендерится один раз при
+ * первом обращении и дальше отдаётся из кэша до истечения revalidate.
+ * Список путей возвращаем пустой намеренно: прогревать весь каталог на
+ * билде незачем, страницы наполняют кэш по мере обращений.
+ */
+export async function generateStaticParams() {
+  return [];
+}
+
 
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -72,7 +87,9 @@ export async function generateMetadata({ params }: { params: { locale: string; a
     fallbackTitle: item.title,
     fallbackDescription: description,
     ogImage: image,
-    canonicalPath: `/${params.locale}/article/${params.article_slug}`,
+    ogType: 'article',
+    locale: params.locale,
+    path: `/article/${params.article_slug}`,
   });
 }
 

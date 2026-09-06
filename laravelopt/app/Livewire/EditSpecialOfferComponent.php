@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Livewire\Concerns\HasSeoFields;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use Carbon\Carbon;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\File;
 class EditSpecialOfferComponent extends Component
 {
     use WithFileUploads;
+    use HasSeoFields;
     public $title_ru;
     public $title_kz;
     public $title_en;
@@ -23,9 +25,6 @@ class EditSpecialOfferComponent extends Component
     public $slug;
     public $image;
     public $status;
-    public $meta_keywords;
-    public $meta_description;
-    public $meta_title;
     public $newimage;
     public $beforeUpdate;
     public $afterUpdate;
@@ -43,9 +42,7 @@ class EditSpecialOfferComponent extends Component
         $this->description_en = $offer->description_en;
         $this->description_kz = $offer->description_kz;
         $this->status = $offer->status;
-        $this->meta_keywords = $offer->meta_keywords;
-        $this->meta_title = $offer->meta_title;
-        $this->meta_description = $offer->meta_description;
+        $this->loadSeoFields($offer);
     }
 
     protected $rules = [
@@ -147,9 +144,7 @@ class EditSpecialOfferComponent extends Component
                 $offer->image = $imageName;
             }
 
-            $offer->meta_description = $this->meta_description;
-            $offer->meta_keywords = $this->meta_keywords;
-            $offer->meta_title = $this->meta_title;
+            $this->applySeoFields($offer, 'offers');
             $offer->save();           
             return redirect()->route('offers');
         } else {
@@ -231,9 +226,7 @@ class EditSpecialOfferComponent extends Component
                 $offer->image = $imageName;
             }
 
-            $offer->meta_description = $this->meta_description;
-            $offer->meta_keywords = $this->meta_keywords;
-            $offer->meta_title = $this->meta_title;
+            $this->applySeoFields($offer, 'offers');
             $validatedData = $this->validate();
             $offer->save($validatedData);           
             return redirect()->route('offers');

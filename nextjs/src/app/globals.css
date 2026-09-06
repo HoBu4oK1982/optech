@@ -80,3 +80,18 @@ body {
 .swiper-button-prev {
   color: var(--primary) !important;
 }
+
+/* Заголовок, который читают поисковики и скринридеры, но который не ломает
+   существующую вёрстку. Использован для <h1> главной: до этого на главной
+   не было заголовка первого уровня вообще — только h2 и h3. */
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

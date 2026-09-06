@@ -1,6 +1,8 @@
-export const dynamic = 'force-dynamic';
+// ISR: статическая страница, пересборка не чаще раза в час.
+export const revalidate = 3600;
 
 import { Metadata } from 'next';
+import { buildMetadata } from '@/lib/seo';
 import { getTranslations } from '@/i18n/translations';
 import { makeT } from '@/i18n/dict';
 import LegalPage, { LegalSection } from '@/components/legal/LegalPage';
@@ -15,11 +17,13 @@ const DIRECTOR = 'Эмиров Сулеймен Гурбанбаевич';
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const tt = makeT(params.locale);
   const title = tt('privacy_page_title');
-  return {
-    title: `${title} — OPTECH`,
-    description: 'Политика конфиденциальности optech.kz: сбор и обработка персональных данных, cookie, права пользователей, контакты ТОО «Оптические Технологии».',
-    robots: { index: true, follow: true },
-  };
+  return buildMetadata({
+    locale: params.locale,
+    path: '/privacy',
+    fallbackTitle: title,
+    fallbackDescription:
+      'Политика конфиденциальности optech.kz: сбор и обработка персональных данных, cookie, права пользователей, контакты ТОО «Оптические Технологии».',
+  });
 }
 
 export default async function PrivacyPage({ params }: { params: { locale: string } }) {

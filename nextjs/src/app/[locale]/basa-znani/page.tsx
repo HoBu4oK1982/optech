@@ -1,6 +1,9 @@
-export const dynamic = 'force-dynamic';
+// ISR: контентный раздел, пересборка не чаще раза в 10 минут
+// (см. комментарий про force-dynamic в app/[locale]/page.tsx).
+export const revalidate = 600;
 
 import { Metadata } from 'next';
+import { buildMetadata } from '@/lib/seo';
 import { getTranslations } from '@/i18n/translations';
 import { getKnowledgeArticles } from '@/lib/api';
 import { truncateHtml } from '@/lib/utils';
@@ -19,7 +22,13 @@ function formatCardDate(value?: string | null): string | null {
 }
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
-  return { title: getTranslations(params.locale).nav.knowledgeBase };
+  const t = getTranslations(params.locale);
+  return buildMetadata({
+    locale: params.locale,
+    path: '/basa-znani',
+    fallbackTitle: t.nav.knowledgeBase,
+    fallbackDescription: t.meta.knowledgeDescription,
+  });
 }
 
 export default async function KnowledgeBasePage({ params }: { params: { locale: string } }) {

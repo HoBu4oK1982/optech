@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import './sectionGrid.css';
@@ -48,7 +49,13 @@ export default function SectionGrid({
           <Link href={it.href} className={`secCard secCard--${variant}`} aria-label={it.title}>
             <div className="secCard__cover">
               {it.imageUrl ? (
-                <img src={it.imageUrl} alt={it.title} loading="lazy" onError={hideOnError} />
+                <Image
+                  src={it.imageUrl}
+                  alt={it.title}
+                  fill
+                  sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  onError={hideOnError}
+                />
               ) : (
                 <span className="secCard__ph" />
               )}

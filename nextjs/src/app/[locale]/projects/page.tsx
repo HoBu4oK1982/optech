@@ -1,6 +1,9 @@
-export const dynamic = 'force-dynamic';
+// ISR: контентный раздел, пересборка не чаще раза в 10 минут
+// (см. комментарий про force-dynamic в app/[locale]/page.tsx).
+export const revalidate = 600;
 
 import { Metadata } from 'next';
+import { buildMetadata } from '@/lib/seo';
 import { getTranslations } from '@/i18n/translations';
 import { getProjects } from '@/lib/api';
 import { truncateHtml } from '@/lib/utils';
@@ -10,7 +13,13 @@ import SectionGrid, { SectionItem } from '@/components/sections/SectionGrid';
 import '@/components/catalog/catalog.css';
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
-  return { title: getTranslations(params.locale).nav.projects };
+  const t = getTranslations(params.locale);
+  return buildMetadata({
+    locale: params.locale,
+    path: '/projects',
+    fallbackTitle: t.nav.projects,
+    fallbackDescription: t.meta.projectsDescription,
+  });
 }
 
 export default async function ProjectsPage({ params }: { params: { locale: string } }) {

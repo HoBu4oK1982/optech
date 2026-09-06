@@ -1,5 +1,21 @@
-export const dynamic = "force-dynamic";
+// ISR: контентный раздел, пересборка не чаще раза в 10 минут
+// (см. комментарий про force-dynamic в app/[locale]/page.tsx).
+export const revalidate = 600;
+/**
+ * Пустой generateStaticParams — не «заглушка», а условие включения ISR.
+ * Без него Next считает маршрут с динамическим сегментом полностью
+ * динамическим: страница рендерится на КАЖДЫЙ запрос и в кэш маршрутов не
+ * попадает (Cache-Control: no-store). С ним страница рендерится один раз при
+ * первом обращении и дальше отдаётся из кэша до истечения revalidate.
+ * Список путей возвращаем пустой намеренно: прогревать весь каталог на
+ * билде незачем, страницы наполняют кэш по мере обращений.
+ */
+export async function generateStaticParams() {
+  return [];
+}
+
 import { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { getTranslations } from '@/i18n/translations';
 import { getSolCategory } from '@/lib/api';
@@ -17,7 +33,8 @@ export async function generateMetadata({ params }: { params: { locale: string; s
     entity: cat,
     fallbackTitle: cat.title || data.solcategory,
     ogImage: cat.og_image ? storageUrl(cat.og_image) : cat.image ? storageUrl(cat.image) : null,
-    canonicalPath: `/${params.locale}/solutions/${params.solcategory_slug}`,
+    locale: params.locale,
+    path: `/solutions/${params.solcategory_slug}`,
   });
 }
 
@@ -46,8 +63,14 @@ export default async function SolCategoryPage({ params }: { params: { locale: st
           <Link key={sol.id} href={`/${locale}/solutions/${solcategory_slug}/${sol.slug}`}
             className="bg-white rounded-xl border hover:shadow-lg transition-all overflow-hidden group">
             {sol.image && (
-              <div className="w-full aspect-video overflow-hidden">
-                <img src={storageUrl(sol.image)} alt={sol.image_alt || sol.title} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+              <div className="relative w-full aspect-video overflow-hidden">
+                <Image
+                  src={storageUrl(sol.image)}
+                  alt={sol.image_alt || sol.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
             )}
             <div className="p-5">

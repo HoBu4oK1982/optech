@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Livewire\Concerns\HasSeoFields;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use Carbon\Carbon;
@@ -16,6 +17,24 @@ use App\Models\Brand;
 class EditBrandComponent extends Component
 {
     use WithFileUploads;
+    use HasSeoFields;
+
+    // Страница бренда — листинг товаров, как категория: у неё есть свои
+    // SEO-тексты над и под сеткой и отдельный заголовок в хлебных крошках.
+    // У услуг и спецпредложений таких колонок нет, поэтому поля объявлены
+    // здесь, а не в общем трейте.
+    public $seo_text_top, $seo_text_top_en, $seo_text_top_kz;
+    public $seo_text_bottom, $seo_text_bottom_en, $seo_text_bottom_kz;
+    public $breadcrumb_title;
+
+    protected function extraSeoFields(): array
+    {
+        return [
+            'seo_text_top', 'seo_text_top_en', 'seo_text_top_kz',
+            'seo_text_bottom', 'seo_text_bottom_en', 'seo_text_bottom_kz',
+            'breadcrumb_title',
+        ];
+    }
     public $slug;
     public $status;
     public $name;
@@ -23,9 +42,6 @@ class EditBrandComponent extends Component
     public $newimage;
     public $brand_slug;
     public $brand_id;
-    public $meta_description;
-    public $meta_keywords;
-    public $meta_title;
 
     protected $rules = [
         'name' => 'required',
@@ -52,9 +68,7 @@ class EditBrandComponent extends Component
         $this->name = $brand->name;
         $this->image = $brand->image;
         $this->status = $brand->status;
-        $this->meta_description = $brand->meta_description;
-        $this->meta_keywords = $brand->meta_keywords;
-        $this->meta_title = $brand->meta_title;
+        $this->loadSeoFields($brand);
         $this->brand_id = $brand->id;
     }
 
@@ -65,9 +79,7 @@ class EditBrandComponent extends Component
         if($this->slug === $brand->slug){
             $brand->name = $this->name;
             $brand->status = $this->status;
-            $brand->meta_description = $this->meta_description;
-            $brand->meta_keywords = $this->meta_keywords;
-            $brand->meta_title = $this->meta_title;
+            $this->applySeoFields($brand, 'brands');
 
             if($this->newimage){
                 if($brand->image == NULL){
@@ -86,9 +98,7 @@ class EditBrandComponent extends Component
             $brand->name = $this->name;
             $brand->status = $this->status;
             $brand->slug = $this->slug;
-            $brand->meta_description = $this->meta_description;
-            $brand->meta_keywords = $this->meta_keywords;
-            $brand->meta_title = $this->meta_title;
+            $this->applySeoFields($brand, 'brands');
 
             if($this->newimage){
                 if($brand->image == NULL){

@@ -9,7 +9,8 @@
   display: flex;
   flex-direction: column;
 }
-/* порядок как на сайте: заголовок → крошки → toggle сортировки → контент */
+/* порядок как на сайте: заголовок → крошки → SEO-текст → toggle сортировки →
+   контент → SEO-текст снизу → FAQ. Внутри одного order порядок задаёт DOM. */
 .catalogPage .catalogHead {
   order: 1;
 }
@@ -19,13 +20,17 @@
   border-bottom: 1px solid #d5d5d5;
   margin-bottom: 30px;
 }
+.catalogPage .seoText--top {
+  order: 2;
+}
 .catalogPage .catSortToggle {
   order: 2;
 }
 .catalogPage .catalogGrid,
 .catalogPage .secGrid,
 .catalogPage .catalogDesc,
-.catalogPage .catalogEmpty {
+.catalogPage .catalogEmpty,
+.catalogPage .seoText--bottom {
   order: 3;
 }
 .catalogPage .faqSection {
@@ -103,16 +108,16 @@
   color: #0847a2;
 }
 .catCard__media {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 190px;
+  padding: 5px 5%;
   margin-top: auto;
 }
 .catCard__media img {
-  max-width: 90%;
-  max-height: 180px;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
@@ -149,7 +154,6 @@
   .catalogGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 14px; row-gap: 22px; }
   .catCard { padding: 20px 14px; }
   .catCard__media { height: 150px; }
-  .catCard__media img { max-height: 140px; }
 }
 
 /* ============================================================
@@ -192,9 +196,6 @@
 .catCard__media--top {
   height: 220px;
   margin-top: 0;
-}
-.catCard__media--top img {
-  max-height: 210px;
 }
 .catCard__title--product {
   width: 100%;

@@ -85,13 +85,13 @@ export async function getProduct(slug: string, locale: string = 'ru') {
 }
 
 // Brands
-export async function getBrands() {
-  const data = await fetchAPI('/brands');
+export async function getBrands(locale: string = 'ru') {
+  const data = await fetchAPI('/brands', locale);
   return data.brands;
 }
 
-export async function getOneBrand(slug: string) {
-  const data = await fetchAPI(`/brand/${slug}`);
+export async function getOneBrand(slug: string, locale: string = 'ru') {
+  const data = await fetchAPI(`/brand/${slug}`, locale);
   return data;
 }
 

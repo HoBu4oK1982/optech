@@ -465,9 +465,14 @@ class FrontendController extends Controller
     // BRANDS
     // =========================================================================
 
-    public function getBrands()
+    public function getBrands(Request $request)
     {
         $brands = Brand::where('status', '0')->orderBy('sort_order', 'ASC')->orderBy('id', 'DESC')->get();
+
+        // Бренды — единственная сущность, которая раньше отдавалась вообще без
+        // локализации: SEO-поля у неё появились только сейчас, вместе с
+        // переводами meta_*/seo_h1/alt.
+        $this->localizeCollection($brands, $this->localeOf($request));
 
         return response()->json([
             'status' => 200,
@@ -475,12 +480,14 @@ class FrontendController extends Controller
         ]);
     }
 
-    public function getOneBrand($slug)
+    public function getOneBrand($slug, Request $request)
     {
         $brand = Brand::where('slug', $slug)->where('status', 0)->first();
         if (! $brand) {
             return response()->json(['status' => 404, 'brand' => []]);
         }
+
+        $this->localizeModel($brand, $this->localeOf($request));
 
         // ВАЖНО: фильтр по status. Раньше здесь его не было, поэтому на
         // странице бренда показывались ВСЕ товары марки, включая скрытые
@@ -505,6 +512,10 @@ class FrontendController extends Controller
         return response()->json([
             'status' => 200,
             'brand' => $dataArray,
+            // Плоские ключи остаются ради обратной совместимости со старым
+            // фронтом; brand_info — целиком локализованная модель со всем
+            // SEO-набором (canonical, robots, og_*, seo_text_* и т.д.).
+            'brand_info' => $brand,
             'brand_name' => $brand->name,
             'brand_description' => $brand->meta_description,
             'brand_keywords' => $brand->meta_keywords,

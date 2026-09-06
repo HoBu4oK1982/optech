@@ -1,6 +1,8 @@
-export const dynamic = 'force-dynamic';
+// ISR: статическая страница, пересборка не чаще раза в час.
+export const revalidate = 3600;
 
 import { Metadata } from 'next';
+import { buildMetadata } from '@/lib/seo';
 import { getTranslations } from '@/i18n/translations';
 import { getSettings } from '@/lib/api';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -35,11 +37,12 @@ export async function generateMetadata({ params }: { params: { locale: string } 
       : params.locale === 'kz'
       ? 'OPTECH байланыстары: телефон, email, Алматыдағы кеңсе мекенжайы және өтінім формасы.'
       : 'Контакты OPTECH: телефон, email, адрес офиса в Алматы и форма заявки. Поможем подобрать оборудование и подготовить коммерческое предложение.';
-  return {
-    title: `${t.nav.contacts} — OPTECH`,
-    description: desc,
-    openGraph: { title: `${t.nav.contacts} — OPTECH`, description: desc },
-  };
+  return buildMetadata({
+    locale: params.locale,
+    path: '/contacts',
+    fallbackTitle: t.nav.contacts,
+    fallbackDescription: desc,
+  });
 }
 
 function labels(locale: string) {

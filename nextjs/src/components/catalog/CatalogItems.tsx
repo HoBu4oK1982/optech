@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { BACKEND_URL } from '@/lib/constants';
@@ -53,7 +54,13 @@ export default function CatalogItems({
           : null;
 
         const media = imgSrc ? (
-          <img src={imgSrc} alt={item.name} loading="lazy" onError={hideOnError} />
+          <Image
+            src={imgSrc}
+            alt={item.name}
+            fill
+            sizes="(max-width: 600px) 45vw, (max-width: 1024px) 30vw, 300px"
+            onError={hideOnError}
+          />
         ) : (
           <span className="catCard__placeholder" />
         );

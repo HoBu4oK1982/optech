@@ -35,10 +35,37 @@
                 </select>
             </label>
 
-            <label class="ad-field"><span>Meta заголовок</span><input type="text" wire:model="meta_title"></label>
-            <label class="ad-field"><span>Meta ключевые слова</span><textarea rows="3" wire:model="meta_keywords"></textarea></label>
-            <label class="ad-field"><span>Meta описание</span><textarea rows="3" wire:model="meta_description"></textarea></label>
+            <div class="ad-field">
+                <span>OG-картинка (для соцсетей)</span>
+                <div class="ad-upload">
+                    <input type="file" class="ad-upload__input" id="brand-edit-og" wire:model="og_image" accept="image/*">
+                    @if($og_image)
+                        <div class="ad-upload__preview"><img src="{{ $og_image->temporaryUrl() }}"></div>
+                    @elseif(!empty($existing_og_image))
+                        <div class="ad-upload__preview"><img src="{{ asset('assets/images/brands/' . $existing_og_image) }}" onerror="this.style.display='none'"></div>
+                    @endif
+                    <label for="brand-edit-og" class="ad-upload__zone">
+                        <div class="ad-upload__icon"><i class="fas fa-share-alt"></i></div>
+                        <div class="ad-upload__text"><strong>OG</strong><span>1200×630, необязательно</span></div>
+                    </label>
+                </div>
+            </div>
         </div>
+
+            <section class="ad-form-section">
+                <div class="ad-section-head"><span class="ad-section-icon"><i class="fas fa-paragraph"></i></span><div><h3>SEO-тексты страницы бренда</h3><p>Выводятся над и под сеткой товаров бренда.</p></div></div>
+                <div data-langtabs>
+                    <div class="ad-langtabs"><button type="button" class="ad-langtab is-active" data-lang="ru">RU</button><button type="button" class="ad-langtab" data-lang="en">EN</button><button type="button" class="ad-langtab" data-lang="kz">KZ</button></div>
+                    <div class="ad-langpane is-active" data-lang="ru"><div class="ad-field" wire:ignore><span>Текст над списком (RU)</span><textarea data-richtext wire:model.blur="seo_text_top">{!! $seo_text_top ?? '' !!}</textarea></div><div class="ad-field" wire:ignore><span>Текст под списком (RU)</span><textarea data-richtext wire:model.blur="seo_text_bottom">{!! $seo_text_bottom ?? '' !!}</textarea></div></div>
+                    <div class="ad-langpane" data-lang="en"><div class="ad-field" wire:ignore><span>Над списком (EN)</span><textarea data-richtext wire:model.blur="seo_text_top_en">{!! $seo_text_top_en ?? '' !!}</textarea></div><div class="ad-field" wire:ignore><span>Под списком (EN)</span><textarea data-richtext wire:model.blur="seo_text_bottom_en">{!! $seo_text_bottom_en ?? '' !!}</textarea></div></div>
+                    <div class="ad-langpane" data-lang="kz"><div class="ad-field" wire:ignore><span>Над списком (KZ)</span><textarea data-richtext wire:model.blur="seo_text_top_kz">{!! $seo_text_top_kz ?? '' !!}</textarea></div><div class="ad-field" wire:ignore><span>Под списком (KZ)</span><textarea data-richtext wire:model.blur="seo_text_bottom_kz">{!! $seo_text_bottom_kz ?? '' !!}</textarea></div></div>
+                </div>
+                <div class="ad-fields-grid" style="margin-top:14px;">
+                    <label class="ad-field"><span>Заголовок в хлебных крошках</span><input type="text" wire:model="breadcrumb_title" placeholder="если пусто — используется название бренда"></label>
+                </div>
+            </section>
+
+        @include('admin.partials.seo')
 
         <div style="margin-top:20px;">
             <button class="ad-btn ad-btn-primary" wire:click="updateBrand"><i class="fas fa-save"></i> Обновить</button>

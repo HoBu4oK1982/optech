@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Livewire\Concerns\HasSeoFields;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -13,15 +14,13 @@ use DOMDocument;
 class AddServiceComponent extends Component
 {
     use WithFileUploads;
+    use HasSeoFields;
 
     public $title_ru;
     public $description_ru;
     public $slug;
     public $image;
     public $status;
-    public $meta_keywords;
-    public $meta_description;
-    public $meta_title;
 
     protected $rules = [
         'title_ru' => 'required',
@@ -75,9 +74,7 @@ class AddServiceComponent extends Component
 
             $service->description_ru = $this->description_ru;
             $service->status = $this->status == NULL ? 0 : $this->status;
-            $service->meta_keywords = $this->meta_keywords;
-            $service->meta_title = $this->meta_title;
-            $service->meta_description = $this->meta_description;
+            $this->applySeoFields($service, 'services');
 
             $imageName = Carbon::now()->timestamp . '.' . $this->image->extension();
             $this->image->storeAs('services', $imageName);

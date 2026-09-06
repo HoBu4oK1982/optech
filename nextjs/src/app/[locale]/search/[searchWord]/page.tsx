@@ -1,6 +1,10 @@
+// Единственная страница, которая осознанно остаётся полностью динамической:
+// результаты поиска зависят от запроса и от searchParams, кэшировать их
+// бессмысленно, а в индекс они и так не идут (noindex, см. generateMetadata).
 export const dynamic = 'force-dynamic';
 
 import { Metadata } from 'next';
+import { buildMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { getTranslations } from '@/i18n/translations';
 import { searchAll, type SearchResultItem } from '@/lib/api';
@@ -117,7 +121,15 @@ function HighlightText({ text, query }: { text: string; query: string }) {
 
 export async function generateMetadata({ params }: { params: { locale: string; searchWord: string } }): Promise<Metadata> {
   const t = getTranslations(params.locale);
-  return { title: `${t.common.searchResults}: ${decodeURIComponent(params.searchWord)}` };
+  // Страницы результатов поиска — служебные: их бесконечно много, контент
+  // дублирует каталог. В индексе им делать нечего (follow оставляем, чтобы
+  // боты проходили по ссылкам на товары).
+  return buildMetadata({
+    locale: params.locale,
+    path: `/search/${params.searchWord}`,
+    fallbackTitle: `${t.common.searchResults}: ${decodeURIComponent(params.searchWord)}`,
+    noindex: true,
+  });
 }
 
 export default async function SearchPage({

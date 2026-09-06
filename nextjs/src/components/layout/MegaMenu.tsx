@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
 import './megaMenu.css';
@@ -245,7 +246,7 @@ export default function MegaMenu({
                   aria-expanded={isExpanded}
                 >
                   {cat.image ? (
-                    <img
+                    <Image
                       className="mmMobile__ico"
                       src={getCategoryImage(cat)}
                       alt=""
@@ -343,7 +344,7 @@ export default function MegaMenu({
                 onClick={() => setOpen(false)}
               >
                 {cat.image ? (
-                  <img
+                  <Image
                     className="mm__parent-ico"
                     src={getCategoryImage(cat)}
                     alt=""
@@ -403,7 +404,7 @@ export default function MegaMenu({
                     >
                       <span className={`mm__child-thumb ${childImage ? '' : 'is-empty'}`}>
                         {childImage ? (
-                          <img
+                          <Image
                             src={childImage}
                             alt=""
                             width={74}

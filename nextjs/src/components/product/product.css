@@ -42,7 +42,12 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  min-height: 320px;
+  /* Была min-height: 320px — высота блока зависела от картинки, и страница
+     «прыгала» после её загрузки (CLS). Фиксированная высота = прежний
+     максимум (max-height картинки 460px + отступы 2×24) и место под
+     изображение резервируется заранее. Плюс это обязательное условие для
+     next/image fill: у позиционированного родителя должна быть высота. */
+  height: 508px;
   background: #fff;
   border: 1px solid #eef2f8;
   border-radius: 16px;
@@ -55,8 +60,6 @@
   align-self: start;
 }
 .productGallery img {
-  max-width: 100%;
-  max-height: 460px;
   object-fit: contain;
 }
 .productGallery__empty {
@@ -249,7 +252,10 @@
     padding: 20px;
   }
   .productGallery {
-    min-height: 300px;
+    /* 420 − padding 2×24 = 372px под картинку: примерно середина между
+       прежними min-height 300px и максимумом 508px, до которого блок мог
+       вырастать под высокую картинку. */
+    height: 420px;
     padding: 24px;
     /* на мобильном колонки складываются в одну — sticky-эффект тут не нужен
        и будет мешать, картинка просто идёт в обычном потоке над инфо */

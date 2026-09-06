@@ -1,15 +1,27 @@
-export const dynamic = 'force-dynamic';
+// ISR: страница пересобирается не чаще раза в 5 минут. Раньше здесь стоял
+// force-dynamic — он не только рендерил страницу на каждый запрос, но и
+// отключал кэш fetch (next.revalidate в lib/api.ts игнорировался), так что
+// каждый заход бота бил в Laravel напрямую.
+export const revalidate = 300;
+// generateStaticParams здесь НЕТ намеренно. Страницы категорий читают
+// searchParams (?sort=), а это несовместимо со статической генерацией: с
+// generateStaticParams Next помечает маршрут как пререндеримый и падает на
+// запросе с DYNAMIC_SERVER_USAGE — страница отдаёт 500. Категории остаются
+// динамическими; нагрузку с Laravel снимает кэш fetch (60 с, см. lib/api.ts).
+// Перевести их на ISR можно, только унеся сортировку на клиент.
+
 
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from '@/i18n/translations';
 import { getSubSubCategory, getProductsByCategory } from '@/lib/api';
 import { BACKEND_URL } from '@/lib/constants';
-import { buildMetadata, buildFaqJsonLd } from '@/lib/seo';
+import { buildMetadata, buildFaqJsonLd, buildItemListJsonLd } from '@/lib/seo';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import CatalogItems, { CatalogItem } from '@/components/catalog/CatalogItems';
 import CatalogSortToggle from '@/components/catalog/CatalogSortToggle';
 import FaqSection from '@/components/seo/FaqSection';
+import SeoText from '@/components/seo/SeoText';
 import { absolutizeRichContent } from '@/lib/utils';
 
 const catImg = (image?: string | null) =>
@@ -38,7 +50,8 @@ export async function generateMetadata({
     fallbackTitle: s.name,
     fallbackDescription: s.description,
     ogImage: catImg(s.og_image || s.image),
-    canonicalPath: `/${params.locale}/catalog/${params.category_slug}/${params.subcategory_slug}/${params.subsubcategory_slug}`,
+    locale: params.locale,
+    path: `/catalog/${params.category_slug}/${params.subcategory_slug}/${params.subsubcategory_slug}`,
   });
 }
 
@@ -93,6 +106,11 @@ export default async function SubSubCategoryPage({
 
   const faqJsonLd = buildFaqJsonLd(subsubcategory.faq);
 
+  const itemListJsonLd = buildItemListJsonLd({
+    items: items.map((i) => ({ name: i.name, url: i.href })),
+    name: subsubcategory.seo_h1 || subsubcategory.name,
+  });
+
   return (
     <div className="catalogPage">
       {faqJsonLd && (
@@ -101,23 +119,34 @@ export default async function SubSubCategoryPage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
+      {itemListJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+        />
+      )}
       <div className="container">
         <Breadcrumbs
           items={[
             { label: t.nav.home, href: `/${locale}` },
             { label: t.nav.catalog, href: `/${locale}/catalog` },
-            { label: pcategory?.name || '', href: `/${locale}/catalog/${category_slug}` },
             {
-              label: subcategory?.name || '',
+              label: pcategory?.breadcrumb_title || pcategory?.name || '',
+              href: `/${locale}/catalog/${category_slug}`,
+            },
+            {
+              label: subcategory?.breadcrumb_title || subcategory?.name || '',
               href: `/${locale}/catalog/${category_slug}/${subcategory_slug}`,
             },
-            { label: subsubcategory.name },
+            { label: subsubcategory.breadcrumb_title || subsubcategory.name },
           ]}
         />
 
         <div className="catalogHead">
           <h1 className="catalogHead__title">{subsubcategory.seo_h1 || subsubcategory.name}</h1>
         </div>
+
+        <SeoText html={subsubcategory.seo_text_top} variant="top" />
 
         {items.length > 1 && (
           <CatalogSortToggle
@@ -143,6 +172,12 @@ export default async function SubSubCategoryPage({
             dangerouslySetInnerHTML={{ __html: absolutizeRichContent(subsubcategory.description) }}
           />
         )}
+
+        <SeoText
+          heading={subsubcategory.seo_h2}
+          html={subsubcategory.seo_text_bottom}
+          variant="bottom"
+        />
 
         <FaqSection items={subsubcategory.faq} />
       </div>

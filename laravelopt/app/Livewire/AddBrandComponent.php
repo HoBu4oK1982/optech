@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Livewire\Concerns\HasSeoFields;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use Carbon\Carbon;
@@ -13,12 +14,27 @@ use App\Models\Brand;
 class AddBrandComponent extends Component
 {
     use WithFileUploads;
+    use HasSeoFields;
+
+    // Страница бренда — листинг товаров, как категория: у неё есть свои
+    // SEO-тексты над и под сеткой и отдельный заголовок в хлебных крошках.
+    // У услуг и спецпредложений таких колонок нет, поэтому поля объявлены
+    // здесь, а не в общем трейте.
+    public $seo_text_top, $seo_text_top_en, $seo_text_top_kz;
+    public $seo_text_bottom, $seo_text_bottom_en, $seo_text_bottom_kz;
+    public $breadcrumb_title;
+
+    protected function extraSeoFields(): array
+    {
+        return [
+            'seo_text_top', 'seo_text_top_en', 'seo_text_top_kz',
+            'seo_text_bottom', 'seo_text_bottom_en', 'seo_text_bottom_kz',
+            'breadcrumb_title',
+        ];
+    }
     public $name;
     public $slug;
     public $status;
-    public $meta_description;
-    public $meta_keywords;
-    public $meta_title;
     public $image;
 
     protected $rules = [
@@ -49,9 +65,7 @@ class AddBrandComponent extends Component
             $brand->status = $this->status == NULL ? 0 : $this->status; 
             $brand->name = $this->name;
             $brand->slug = $this->slug;
-            $brand->meta_description = $this->meta_description;
-            $brand->meta_keywords = $this->meta_keywords;
-            $brand->meta_title = $this->meta_title;
+            $this->applySeoFields($brand, 'brands');
             $imageName = Carbon::now()->timestamp . '.' . $this->image->extension();
             $this->image->storeAs('brands', $imageName);
             $brand->image = $imageName;

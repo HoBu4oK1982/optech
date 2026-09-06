@@ -1,4 +1,20 @@
-export const dynamic = "force-dynamic";
+// ISR: контентный раздел, пересборка не чаще раза в 10 минут
+// (см. комментарий про force-dynamic в app/[locale]/page.tsx).
+export const revalidate = 600;
+/**
+ * Пустой generateStaticParams — не «заглушка», а условие включения ISR.
+ * Без него Next считает маршрут с динамическим сегментом полностью
+ * динамическим: страница рендерится на КАЖДЫЙ запрос и в кэш маршрутов не
+ * попадает (Cache-Control: no-store). С ним страница рендерится один раз при
+ * первом обращении и дальше отдаётся из кэша до истечения revalidate.
+ * Список путей возвращаем пустой намеренно: прогревать весь каталог на
+ * билде незачем, страницы наполняют кэш по мере обращений.
+ */
+export async function generateStaticParams() {
+  return [];
+}
+
+import Image from 'next/image';
 import { Metadata } from 'next';
 import { getTranslations } from '@/i18n/translations';
 import { getSolution } from '@/lib/api';
@@ -16,7 +32,8 @@ export async function generateMetadata({ params }: { params: { locale: string; s
     entity: s,
     fallbackTitle: s.title,
     ogImage: s.og_image ? storageUrl(s.og_image) : s.image ? storageUrl(s.image) : null,
-    canonicalPath: `/${params.locale}/solutions/${params.solcategory_slug}/${params.solution_slug}`,
+    locale: params.locale,
+    path: `/solutions/${params.solcategory_slug}/${params.solution_slug}`,
   });
 }
 
@@ -43,12 +60,15 @@ export default async function SolutionDetailPage({ params }: { params: { locale:
       <article className="max-w-4xl">
         <h1 className="text-3xl font-bold text-dark mb-6">{s.seo_h1 || s.title}</h1>
         {s.image && (
-          <div className="mb-8 rounded-xl overflow-hidden">
-            <img
+          <div className="relative mb-8 aspect-[16/9] max-h-[500px] overflow-hidden rounded-xl">
+            <Image
               src={storageUrl(s.image)}
               alt={s.image_alt || s.title}
               title={s.image_title || undefined}
-              className="w-full object-cover max-h-[500px]"
+              fill
+              sizes="(max-width: 1024px) 100vw, 896px"
+              className="object-cover"
+              priority
             />
           </div>
         )}

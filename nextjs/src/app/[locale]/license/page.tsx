@@ -1,6 +1,8 @@
-export const dynamic = 'force-dynamic';
+// ISR: статическая страница, пересборка не чаще раза в час.
+export const revalidate = 3600;
 
 import { Metadata } from 'next';
+import { buildMetadata } from '@/lib/seo';
 import { getTranslations } from '@/i18n/translations';
 import { makeT } from '@/i18n/dict';
 import { getLicenses } from '@/lib/api';
@@ -11,7 +13,12 @@ import '@/components/info/infoPages.css';
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const tt = makeT(params.locale);
-  return { title: `${tt('licence_page_title')} — OPTECH` };
+  return buildMetadata({
+    locale: params.locale,
+    path: '/license',
+    fallbackTitle: tt('licence_page_title'),
+    fallbackDescription: getTranslations(params.locale).meta.licenseDescription,
+  });
 }
 
 export default async function LicensePage({ params }: { params: { locale: string } }) {

@@ -30,6 +30,8 @@ export default function PartnersSlider({ partners }: { partners: any[] }) {
           src={`${BACKEND_URL}/assets/images/partners/${item.image}`}
           alt="Наши партнеры"
           className="articlesItemImg"
+          loading="lazy"
+          decoding="async"
         />
       ))}
     </Slider>

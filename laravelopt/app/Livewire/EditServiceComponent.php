@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Livewire\Concerns\HasSeoFields;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use Carbon\Carbon;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\File;
 class EditServiceComponent extends Component
 {   
     use WithFileUploads;
+    use HasSeoFields;
     public $title_ru;
     public $title_kz;
     public $title_en;
@@ -23,9 +25,6 @@ class EditServiceComponent extends Component
     public $slug;
     public $image;
     public $status;
-    public $meta_keywords;
-    public $meta_description;
-    public $meta_title;
     public $newimage;
     public $beforeUpdate;
     public $afterUpdate;
@@ -44,9 +43,7 @@ class EditServiceComponent extends Component
         $this->description_kz = $service->description_kz;
         
         $this->status = $service->status;
-        $this->meta_keywords = $service->meta_keywords;
-        $this->meta_title = $service->meta_title;
-        $this->meta_description = $service->meta_description;
+        $this->loadSeoFields($service);
     }
 
     protected $rules = [
@@ -153,9 +150,7 @@ class EditServiceComponent extends Component
                 $service->image = $imageName;
             }
 
-            $service->meta_description = $this->meta_description;
-            $service->meta_keywords = $this->meta_keywords;
-            $service->meta_title = $this->meta_title;
+            $this->applySeoFields($service, 'services');
             $service->save();           
             return redirect()->route('services');
         }else{
@@ -242,9 +237,7 @@ class EditServiceComponent extends Component
                 $service->image = $imageName;
             }
 
-            $service->meta_description = $this->meta_description;
-            $service->meta_keywords = $this->meta_keywords;
-            $service->meta_title = $this->meta_title;
+            $this->applySeoFields($service, 'services');
             $validatedData = $this->validate();
             $service->save($validatedData);           
             return redirect()->route('services');

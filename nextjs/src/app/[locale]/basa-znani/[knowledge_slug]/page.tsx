@@ -1,6 +1,22 @@
-export const dynamic = 'force-dynamic';
+// ISR: контентный раздел, пересборка не чаще раза в 10 минут
+// (см. комментарий про force-dynamic в app/[locale]/page.tsx).
+export const revalidate = 600;
+/**
+ * Пустой generateStaticParams — не «заглушка», а условие включения ISR.
+ * Без него Next считает маршрут с динамическим сегментом полностью
+ * динамическим: страница рендерится на КАЖДЫЙ запрос и в кэш маршрутов не
+ * попадает (Cache-Control: no-store). С ним страница рендерится один раз при
+ * первом обращении и дальше отдаётся из кэша до истечения revalidate.
+ * Список путей возвращаем пустой намеренно: прогревать весь каталог на
+ * билде незачем, страницы наполняют кэш по мере обращений.
+ */
+export async function generateStaticParams() {
+  return [];
+}
+
 
 import { Metadata } from 'next';
+import { buildMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { getTranslations } from '@/i18n/translations';
 import { getKnowledgeArticle, getKnowledgeArticles } from '@/lib/api';
@@ -66,16 +82,15 @@ export async function generateMetadata({ params }: { params: { locale: string; k
   const image = knowledgeImageUrl(item.og_image || item.image);
   const description = item.meta_description || item.og_description || item.excerpt || stripHtml(item.description).slice(0, 170);
 
-  return {
-    title: item.meta_title || item.og_title || item.title,
-    description,
-    keywords: item.meta_keywords || '',
-    openGraph: {
-      title: item.og_title || item.meta_title || item.title,
-      description,
-      images: image ? [image] : [],
-    },
-  };
+  return buildMetadata({
+    entity: item,
+    locale: params.locale,
+    path: `/basa-znani/${params.knowledge_slug}`,
+    fallbackTitle: item.title,
+    fallbackDescription: description,
+    ogImage: image,
+    ogType: 'article',
+  });
 }
 
 export default async function KnowledgeArticlePage({ params }: { params: { locale: string; knowledge_slug: string } }) {

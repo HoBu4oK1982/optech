@@ -55,12 +55,16 @@ export default function HomeSliderView({ sliders, locale }: { sliders: Slide[]; 
   return (
     <div className="homeSlider">
       <Slider {...settings}>
-        {sliders.map((slide) => {
+        {sliders.map((slide, index) => {
+          // Первый слайд — LCP-элемент главной. loading="lazy" откладывал
+          // загрузку самой важной картинки страницы.
+          const isFirst = index === 0;
           const img = (
             <img
               src={sliderImageUrl(slide.image)}
               alt={slide.alt ?? ''}
-              loading="lazy"
+              loading={isFirst ? 'eager' : 'lazy'}
+              fetchPriority={isFirst ? 'high' : 'auto'}
               decoding="async"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).style.display = 'none';

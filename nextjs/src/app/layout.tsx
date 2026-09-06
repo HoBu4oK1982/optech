@@ -4,26 +4,20 @@ import '@/styles/response.css';
 import '@/styles/dots.css';
 import '@/components/ui/sitePreloader.css';
 
-import SitePreloader from '@/components/ui/SitePreloader';
-import YandexMetrika from '@/components/analytics/YandexMetrika';
-
+/**
+ * Корневой layout намеренно НЕ рендерит <html>/<body>.
+ *
+ * Атрибут lang обязан зависеть от локали, а корневой layout сегмент [locale]
+ * не получает — раньше здесь был захардкожен lang="ru", и все страницы /en и
+ * /kz объявляли себя русскими. Оболочку документа теперь рендерят:
+ *   - app/[locale]/layout.tsx — для всех страниц сайта;
+ *   - app/not-found.tsx — для путей, не попавших ни в одну локаль.
+ * Глобальные стили остаются здесь: они общие для обеих веток.
+ */
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="ru" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/assets/images/favicon.ico" sizes="any" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-        <meta name="theme-color" content="#121123" />
-      </head>
-      <body>
-        <YandexMetrika />
-        <SitePreloader />
-        {children}
-      </body>
-    </html>
-  );
+  return <>{children}</>;
 }

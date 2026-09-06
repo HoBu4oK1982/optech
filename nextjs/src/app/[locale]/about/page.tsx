@@ -1,6 +1,8 @@
-export const dynamic = 'force-dynamic';
+// ISR: статическая страница, пересборка не чаще раза в час.
+export const revalidate = 3600;
 
 import { Metadata } from 'next';
+import { buildMetadata } from '@/lib/seo';
 import { getTranslations } from '@/i18n/translations';
 import { getSettings, getPartners, getLicenses } from '@/lib/api';
 import { BACKEND_URL } from '@/lib/constants';
@@ -40,11 +42,12 @@ export async function generateMetadata({ params }: { params: { locale: string } 
       : params.locale === 'kz'
       ? 'OPTECH — Қазақстандағы технологиялық шешімдердің дистрибьюторы және интеграторы: өлшеу аспаптары, телеком және инженерлік жабдық.'
       : 'OPTECH — дистрибьютор и интегратор технологических решений в Казахстане: измерительные приборы, телеком- и инженерное оборудование от ведущих производителей.';
-  return {
-    title: `${t.nav.about} — OPTECH`,
-    description: desc,
-    openGraph: { title: `${t.nav.about} — OPTECH`, description: desc },
-  };
+  return buildMetadata({
+    locale: params.locale,
+    path: '/about',
+    fallbackTitle: t.nav.about,
+    fallbackDescription: desc,
+  });
 }
 
 // Локализованный контент страницы. Держим прямо здесь (а не в общем dict),
