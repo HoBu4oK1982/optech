@@ -1,0 +1,32 @@
+/* ===== Icon — строчное поведение вместо блочного =====
+
+   В globals.css подключён @tailwind base (Preflight), а он содержит правило
+       img, svg, video, canvas, ... { display: block; vertical-align: middle }
+   Шрифтовым иконкам Font Awesome оно было безразлично — там рисовался
+   текстовый глиф через ::before. Инлайновому <svg> — нет: иконка становилась
+   блоком и уезжала на отдельную строку от телефона/почты/адреса, а
+   vertical-align на ней просто игнорировался. Возвращаем строчное поведение.
+
+   Метрики повторяют шрифт Font Awesome 6 один в один: unitsPerEm = 512,
+   ascent = 448 (0.875em), descent = 64 (0.125em). То есть контур высотой
+   512 единиц занимал ровно 1em и опускался на 0.125em ниже базовой линии —
+   отсюда height:1em и vertical-align:-0.125em. Ширина у FA была равна
+   ширине глифа (advance width), а не 1em: у fa-map-marker-alt это 0.75em,
+   у fa-house-chimney — 1.125em. Поэтому ширина задаётся инлайн-стилем из
+   пропорций viewBox, иначе несквадратные иконки либо жались, либо получали
+   пустые поля по бокам. */
+
+.op-icon {
+  display: inline-block;
+  height: 1em;
+  line-height: 1;
+  vertical-align: -0.125em;
+  font-style: normal;
+}
+
+.op-icon > svg {
+  display: block;
+  height: 1em;
+  fill: currentColor;
+  overflow: visible;
+}

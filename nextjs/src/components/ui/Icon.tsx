@@ -13,9 +13,15 @@
  * .inputField i { position: absolute } и т.д.) продолжают работать как были.
  * Внутренний svg наследует цвет через currentColor и размер через 1em.
  *
+ * Геометрию и строчное поведение задаёт icon.css — там же объяснено, почему
+ * без него Tailwind Preflight (svg { display: block }) уносил иконку на
+ * отдельную строку и почему ширина считается из пропорций viewBox.
+ *
  * Контуры взяты из Font Awesome Free 6.5.2, лицензия иконок CC BY 4.0
  * (https://fontawesome.com/license/free).
  */
+
+import './icon.css';
 
 type IconGlyph = { viewBox: string; d: string };
 
@@ -80,15 +86,24 @@ export default function Icon({
 }) {
   const glyph = ICONS[name];
 
+  // Ширина глифа в em: у Font Awesome она равнялась advance width шрифта,
+  // то есть отношению сторон контура (512 единиц по высоте = 1em).
+  const [, , vbWidth, vbHeight] = glyph.viewBox.split(' ').map(Number);
+  const emWidth = Math.round((vbWidth / vbHeight) * 1000) / 1000;
+
   return (
-    <i className={className} aria-hidden={title ? undefined : true} title={title}>
+    <i
+      className={className ? `op-icon ${className}` : 'op-icon'}
+      aria-hidden={title ? undefined : true}
+      title={title}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox={glyph.viewBox}
         fill="currentColor"
         focusable="false"
         aria-hidden="true"
-        style={{ width: '1em', height: '1em', verticalAlign: '-0.125em' }}
+        style={{ width: `${emWidth}em` }}
       >
         <path d={glyph.d} />
       </svg>
